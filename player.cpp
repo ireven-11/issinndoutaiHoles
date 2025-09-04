@@ -473,17 +473,3 @@ void DrawPlayer(Player& player1, Player& player2, DINPUT_JOYSTATE input,int suct
 		}
 	}
 }
-
-//任天堂プロコンかxboxコントローラーどっちを使うか
-void ProConOrXBoxCon(bool isPro)
-{
-
-	if (isPro)
-	{
-
-	}
-	else
-	{
-
-	}
-}

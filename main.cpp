@@ -184,6 +184,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	PrevBbuttonFlag		 = false;
 	startVideoCount		 = 0;
 	suctionSucceedEffectFlag = false;
+
+	//フォントを使えるようにする
+	AddFontResourceEx("font/BugMaruUI.ttc", FR_PRIVATE, NULL);
 	FontSize125			 = CreateFontToHandle("BugMaru UI", 125, 10, DX_FONTTYPE_EDGE);
 	FontSize50			 = CreateFontToHandle("BugMaru UI", 50, 10, DX_FONTTYPE_EDGE);
 	FontSize100			 = CreateFontToHandle("BugMaru UI", 100, 10, DX_FONTTYPE_EDGE);
