@@ -9,9 +9,9 @@
 #include"UI.h"
 #include"common.h"
 
-//コントローラーを使うときはコントローラーの裏の設定をDにする
 //コントローラーのボタン入力を読み取る構造体変数
 DINPUT_JOYSTATE input;
+XINPUT_STATE	inputX;
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
@@ -212,6 +212,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		// ウインドウのクライアント領域を取得する
 		GetWindowSize(&WindowW, &WindowH);
 
+		if (GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_360
+			|| GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_ONE)
+		{
+			GetJoypadXInputState(DX_INPUT_PAD1, &inputX);
+		}
+		else if (GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_SWITCH_PRO_CTRL)
+		{
+			GetJoypadDirectInputState(DX_INPUT_PAD1, &input);
+		}
+
 		//シーン切り替え
 		switch (selectscene)
 		{
@@ -231,7 +241,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			}
 
 			//Bボタンで説明画面へ
-			if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B || CheckHitKey(KEY_INPUT_RETURN) == 1)
+			if (GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_SWITCH_PRO_CTRL && GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B
+				|| inputX.Buttons[XINPUT_BUTTON_A] > 0)
 			{
 				if (!PrevBbuttonFlag)
 				{
@@ -290,7 +301,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 				DrawGraph(0, 0, DemoMovie, FALSE);
 
 				//Bボタンを押したらタイトルへ戻る
-				if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B || startVideoCount > 3000)
+				if (GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_SWITCH_PRO_CTRL && GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B
+					|| inputX.Buttons[XINPUT_BUTTON_A] > 0
+					|| startVideoCount > 3000)
 				{
 					startVideoCount = 0;
 					PauseMovieToGraph(DemoMovie);
@@ -306,9 +319,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			break;
 
 		case EXPLANE:
-			//コントローラーの入力状態を取得
-			GetJoypadDirectInputState(DX_INPUT_PAD1, &input);
-
 			//背景描画
 			DrawExtendGraph(0, 0, initialWIDTH, HEIGHT, backGraph,TRUE);
 
@@ -357,7 +367,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			UpdatePlayerBullet(PlayerBullet, PlayerShotNumber, player1, input, shotSound, remainingBullet);
 
 			//プレイヤーが弾をうった時にショットカウントを増やす
-			if (input.Buttons[5] > 0 && !tutorial1and2Flag || input.Buttons[7] > 0 && !tutorial1and2Flag)
+			if (input.Buttons[5] > 0 && !tutorial1and2Flag
+				|| input.Buttons[7] > 0 && !tutorial1and2Flag
+				|| inputX.RightTrigger > 0
+				|| inputX.Buttons[XINPUT_BUTTON_RIGHT_SHOULDER] > 0)
 			{
 				if (!shotFlag)
 				{
@@ -393,7 +406,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 				//チュートリアル敵弾描画
 				DrawTutorialBullet(TutorialBullet);
 
-				if (input.Buttons[4] > 0 || input.Buttons[6] > 0)
+				if (input.Buttons[4] > 0 
+					|| input.Buttons[6] > 0
+					|| inputX.LeftTrigger > 0
+					|| inputX.Buttons[XINPUT_BUTTON_LEFT_SHOULDER] > 0)
 				{
 					//たまを吸い込んだ時に演出を加える
 					if (player2.x + 125 < TutorialBullet.x1 &&	//xmin当たり判定
@@ -439,7 +455,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			hitPlayerBullet(PlayerBullet, PlayerShotNumber, player2, zigzagEnemy, score, straightEnemy, shootingEnemy, backEnemy, raidEnemy, blockHP, blockFlag, blockX1, blockX2, blockY1, blockY2, explosionSound);
 
 			//スタートボタンでプレイ画面へ
-			if (input.Buttons[11] > 0 || CheckHitKey(KEY_INPUT_SPACE) == 1)
+			if (input.Buttons[11] > 0
+				|| inputX.Buttons[XINPUT_BUTTON_RIGHT_THUMB] > 0)
 			{
 				selectscene = PLAY;
 
