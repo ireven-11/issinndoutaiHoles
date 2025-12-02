@@ -82,10 +82,10 @@ void InitializeRaidEnemy(Enemy raidEnemy[])
 //ŠïP“Gƒ‹[ƒ`ƒ“
 void UpdateRaidEnemy(Enemy raidEnemy[],int& scroll, int wave2)
 {
-    int j = 0;
-
     if (scroll > wave2)
     {
+        int j = 0;
+
         for (int i = 0; i < raidEnemyNumber; i++)
         {
             //ã‚©‚ç‚­‚é“G‚ÌˆÚ“®

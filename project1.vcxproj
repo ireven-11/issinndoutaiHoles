@@ -23,6 +23,7 @@
     <ClCompile Include="block.cpp" />
     <ClCompile Include="changeVolume.cpp" />
     <ClCompile Include="collision.cpp" />
+    <ClCompile Include="FPS.cpp" />
     <ClCompile Include="raidEnemy.cpp" />
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="shootingEnemy.cpp" />
@@ -58,6 +59,7 @@
     <ClInclude Include="block.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="common.h" />
+    <ClInclude Include="FPS.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="shot.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>

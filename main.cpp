@@ -8,6 +8,8 @@
 #include"scene.h"
 #include"UI.h"
 #include"common.h"
+#include<memory>
+#include"FPS.h"
 
 //コントローラーのボタン入力を読み取る構造体変数
 DINPUT_JOYSTATE input;
@@ -15,6 +17,9 @@ XINPUT_STATE	inputX;
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
+	std::shared_ptr<FPS> fps = std::make_shared<FPS>();
+	fps->init();
+
 	//----基本設定----
 
 	//画面大きさ変更変数
@@ -794,16 +799,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		}
 
 		//リフレッシュレート対策
-		int term;
-		static int t = 0;
-		term = GetNowCount() - t;
-		if (16 - term > 0)
-			Sleep(16 - term);
-		t = GetNowCount();
+		fps->update();
+		fps->wait();
+		fps->draw();
 
 		// 裏画面の内容を表画面に反映
 		ScreenFlip();
 	}
+
+	fps = nullptr;
 
 	DxLib_End();
 	return 0;
