@@ -4,8 +4,18 @@
 #include"enemy.h"
 #include"block.h"
 
+static XINPUT_STATE inputX;
+
 void pauseScene(bool& startPauseFlag,int& BrinkCounter,int pauseScreenHandle,int FontSize100,int FontSize50,int bgm,int& startVideoCount,bool finishPauseFlag,int startPauseSound,int initialWIDTH,int HEIGHT,int& selectscene, DINPUT_JOYSTATE input,int warningSound)
 {
+	//インプット
+	if (GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_360
+		|| GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_ONE)
+	{
+		GetJoypadXInputState(DX_INPUT_PAD1, &inputX);
+	}
+	GetJoypadDirectInputState(DX_INPUT_PAD1, &input);
+
 	if (startPauseFlag)
 	{
 		StopSoundMem(warningSound);
@@ -23,9 +33,6 @@ void pauseScene(bool& startPauseFlag,int& BrinkCounter,int pauseScreenHandle,int
 		BrinkCounter = 0;
 	}
 
-	//コントローラーの入力状態を取得
-	GetJoypadDirectInputState(DX_INPUT_PAD1, &input);
-
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128); // 半透明モード
 	DrawGraph(0, 0, pauseScreenHandle, TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0); // 通常描画に戻す
@@ -39,7 +46,8 @@ void pauseScene(bool& startPauseFlag,int& BrinkCounter,int pauseScreenHandle,int
 	//Bボタンでタイトルに戻る
 	/*DrawStringToHandle(initialWIDTH / 2 - 125, HEIGHT / 2 + 50, "Bでタイトルへ", GetColor(255, 255, 255), FontSize50);*/
 	DrawStringToHandle(initialWIDTH / 2 - 125, HEIGHT / 2 + 50, "Aでタイトルへ", GetColor(255, 255, 255), FontSize50);
-	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B || CheckHitKey(KEY_INPUT_SPACE) == 1)
+	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
+		|| inputX.Buttons[XINPUT_BUTTON_A] > 0)
 	{
 		StopSoundMem(bgm); //bgmを止める
 		startVideoCount = 0;
@@ -50,7 +58,8 @@ void pauseScene(bool& startPauseFlag,int& BrinkCounter,int pauseScreenHandle,int
 	//Xボタンでプレイ画面へ戻る
 	/*DrawStringToHandle(initialWIDTH / 2 - 150, HEIGHT / 2, "Xでプレイ画面へ", GetColor(255, 255, 255), FontSize50);*/
 	DrawStringToHandle(initialWIDTH / 2 - 150, HEIGHT / 2, "Yでプレイ画面へ", GetColor(255, 255, 255), FontSize50);
-	if (input.Buttons[2] > 0)
+	if (input.Buttons[2] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
+		|| inputX.Buttons[XINPUT_BUTTON_Y] > 0)
 	{
 		//ポーズ画面終了フラグをtrueにする
 		finishPauseFlag = true;
@@ -61,6 +70,13 @@ void pauseScene(bool& startPauseFlag,int& BrinkCounter,int pauseScreenHandle,int
 
 void gameOverScene(bool& overSoundFlag,int overSound,int& BrinkCounter,int initialWIDTH,int HEIGHT,int FontSize50,int FontSize100,int& score,int& scoreMagnificatoin,int& startVideoCount,int FontSize300,int&selectscene)
 {
+	//インプット
+	if (GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_360
+		|| GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_ONE)
+	{
+		GetJoypadXInputState(DX_INPUT_PAD1, &inputX);
+	}
+
 	//ゲームオーバー時効果音
 	if (overSoundFlag)
 	{
@@ -117,7 +133,8 @@ void gameOverScene(bool& overSoundFlag,int overSound,int& BrinkCounter,int initi
 	}
 
 	//Bボタンでタイトルに戻る
-	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B || CheckHitKey(KEY_INPUT_SPACE) == 1)
+	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
+		|| inputX.Buttons[XINPUT_BUTTON_A] > 0)
 	{
 		StopSoundMem(overSound);
 		startVideoCount = 0;
@@ -128,6 +145,13 @@ void gameOverScene(bool& overSoundFlag,int overSound,int& BrinkCounter,int initi
 
 void clearScene(Player& player1, int initialWIDTH, Player& player2, int& BrinkCounter, int shotSound, int HEIGHT, int FontSize300, int FontSize30, bool& clearSoundFlag, int& score, int FontSize100, int& scoreMagnificatoin, int& damage, int& startVideoCount, int& selectscene, int suctionSound, int bgm, int clearSound, int FontSize50)
 {
+	//インプット
+	if (GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_360
+		|| GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_ONE)
+	{
+		GetJoypadXInputState(DX_INPUT_PAD1, &inputX);
+	}
+
 	if (player1.x > initialWIDTH && player2.x > initialWIDTH)
 	{
 		//点滅カウンターの数値を増やす
@@ -193,7 +217,8 @@ void clearScene(Player& player1, int initialWIDTH, Player& player2, int& BrinkCo
 		}
 
 		//Bボタンでタイトルに戻る
-		if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B)
+		if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
+			|| inputX.Buttons[XINPUT_BUTTON_A] > 0)
 		{
 			startVideoCount = 0;
 			PlayMovie("video/finishuzumaki0.7.mp4", 1, DX_MOVIEPLAYTYPE_NORMAL);

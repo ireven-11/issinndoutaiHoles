@@ -3,6 +3,8 @@
 #include"shot.h"
 #include"block.h"
 
+static XINPUT_STATE inputX;
+
 //プレイヤー初期化
 void InitializePlayer(Player& player1,Player& player2)
 {
@@ -26,7 +28,12 @@ void InitializePlayer(Player& player1,Player& player2)
 //プレイヤールーチン
 void UpdatePlayer(Player& player1, Player& player2, DINPUT_JOYSTATE input, Bullet zigzagEnemyBullet[], int& scoreMagnificatoin, int suctionSound, int succeedSuctionSound, int& remainingBullet, Bullet shootingEnemyBullet[], bool blockFlag[], int blockX1[], int blockX2[], int blockY1[], int blockY2[],int& scroll,int wave4, bool& suctionSucceedEffectFlag)
 {
-	//コントローラーの入力状態を取得
+	//インプット
+	if (GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_360
+		|| GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_ONE)
+	{
+		GetJoypadXInputState(DX_INPUT_PAD1, &inputX);
+	}
 	GetJoypadDirectInputState(DX_INPUT_PAD1, &input);
 
 	//クリアするまで
@@ -264,7 +271,10 @@ void UpdatePlayer(Player& player1, Player& player2, DINPUT_JOYSTATE input, Bulle
 		}
 
 		//LBボタンを押してる間だけ弾を吸う
-		if (input.Buttons[4] > 0 || input.Buttons[6] > 0)
+		if (input.Buttons[4] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
+			|| input.Buttons[6] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
+			|| inputX.LeftTrigger > 0
+			|| inputX.Buttons[XINPUT_BUTTON_LEFT_SHOULDER] > 0)
 		{
 			//吸い込み効果音
 			PlaySoundMem(suctionSound, DX_PLAYTYPE_LOOP, FALSE);
@@ -363,12 +373,27 @@ void UpdatePlayer(Player& player1, Player& player2, DINPUT_JOYSTATE input, Bulle
 //プレイヤー描画
 void DrawPlayer(Player& player1, Player& player2, DINPUT_JOYSTATE input,int suctionEffect[],int& suctionEffectCount,bool& invincibleFlag,int& invincibleTimeCount, bool& suctionSucceedEffectFlag, int& suctionSucceedEffectCount, int suctionSucceedEffect[], int Lstick,int Rstick)
 {
-	//コントローラーの入力状態を取得
-	GetJoypadDirectInputState(DX_INPUT_PAD1, &input);
+	//インプット
+	if (GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_360
+		|| GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_ONE)
+	{
+		GetJoypadXInputState(DX_INPUT_PAD1, &inputX);
+	}
+	else
+	{
+		GetJoypadDirectInputState(DX_INPUT_PAD1, &input);
+	}
 
 	if (player1.isInScreenFlag && player2.isInScreenFlag)
 	{
-		if (input.Buttons[4] > 0 && input.Buttons[5] > 0 || input.Buttons[6] > 0 && input.Buttons[7] > 0)
+		if (input.Buttons[4] > 0 && input.Buttons[5] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
+			|| input.Buttons[6] > 0 && input.Buttons[7] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
+			|| input.Buttons[4] > 0 && input.Buttons[7] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
+			|| input.Buttons[6] > 0 && input.Buttons[5] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
+			|| inputX.RightTrigger > 0 && inputX.LeftTrigger > 0
+			|| inputX.Buttons[XINPUT_BUTTON_RIGHT_SHOULDER] > 0 && inputX.Buttons[XINPUT_BUTTON_LEFT_SHOULDER] > 0
+			|| inputX.RightTrigger > 0 && inputX.Buttons[XINPUT_BUTTON_LEFT_SHOULDER] > 0
+			|| inputX.Buttons[XINPUT_BUTTON_RIGHT_SHOULDER] > 0 && inputX.LeftTrigger > 0)
 		{
 			//プレイヤーを描画
 			if (invincibleFlag && invincibleTimeCount % 2 == 0)//点滅描画
@@ -394,7 +419,10 @@ void DrawPlayer(Player& player1, Player& player2, DINPUT_JOYSTATE input,int suct
 			suctionEffectCount--;
 
 		}
-		else if (input.Buttons[5] > 0 || input.Buttons[7] > 0)
+		else if (input.Buttons[5] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
+			|| input.Buttons[7] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
+			|| inputX.RightTrigger > 0
+			|| inputX.Buttons[XINPUT_BUTTON_RIGHT_SHOULDER] > 0)
 		{
 			//プレイヤーを描画
 			if (invincibleFlag && invincibleTimeCount % 2 == 0)//点滅描画
@@ -409,7 +437,10 @@ void DrawPlayer(Player& player1, Player& player2, DINPUT_JOYSTATE input,int suct
 				DrawGraph(player2.x, player2.y, player2.normalgraph, TRUE);
 			}
 		}
-		else if (input.Buttons[4] > 0 || input.Buttons[6] > 0)
+		else if (input.Buttons[4] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
+			|| input.Buttons[6] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
+			|| inputX.LeftTrigger > 0
+			|| inputX.Buttons[XINPUT_BUTTON_LEFT_SHOULDER] > 0)
 		{
 			//プレイヤーを描画
 			if (invincibleFlag && invincibleTimeCount % 2 == 0)//点滅描画

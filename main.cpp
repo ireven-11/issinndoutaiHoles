@@ -212,20 +212,21 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		// ウインドウのクライアント領域を取得する
 		GetWindowSize(&WindowW, &WindowH);
 
-		if (GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_360
-			|| GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_ONE)
-		{
-			GetJoypadXInputState(DX_INPUT_PAD1, &inputX);
-		}
-		else if (GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_SWITCH_PRO_CTRL)
-		{
-			GetJoypadDirectInputState(DX_INPUT_PAD1, &input);
-		}
-
 		//シーン切り替え
 		switch (selectscene)
 		{
 		case TITLE:
+			//インプット
+			if (GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_360
+				|| GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_ONE)
+			{
+				GetJoypadXInputState(DX_INPUT_PAD1, &inputX);
+			}
+			else if (GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_SWITCH_PRO_CTRL)
+			{
+				GetJoypadDirectInputState(DX_INPUT_PAD1, &input);
+			}
+
 			//ロゴ画像を描画
 			DrawExtendGraph(0, 0, initialWIDTH, HEIGHT, rogo, TRUE);
 
@@ -319,6 +320,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			break;
 
 		case EXPLANE:
+			//インプット
+			if (GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_360
+				|| GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_ONE)
+			{
+				GetJoypadXInputState(DX_INPUT_PAD1, &inputX);
+			}
+			else if (GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_SWITCH_PRO_CTRL)
+			{
+				GetJoypadDirectInputState(DX_INPUT_PAD1, &input);
+			}
+
 			//背景描画
 			DrawExtendGraph(0, 0, initialWIDTH, HEIGHT, backGraph,TRUE);
 
@@ -693,7 +705,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			DrawUI(scroll, wave4, selectscene, FontSize50, score, scoreMagnificatoin, player1, remainingBulletGraph, remainingBullet, HPgraph, damage, tutorial1and2Flag, initialWIDTH, HEIGHT, tutorial4Flag, FontSize100, BrinkCounter, tutorial3Flag, startVideoCount, warningGraph, warningSound);
 
 			//Yボタンでポーズ画面へ移行(内部的にはX)
-			if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_X)
+			if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_X
+				|| inputX.Buttons[XINPUT_BUTTON_X] > 0)
 			{
 				// ゲーム画面をバッファに保存
 				SetDrawScreen(pauseScreenHandle); // バッファに切り替え

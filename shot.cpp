@@ -4,6 +4,8 @@
 #include"player.h"
 #include<math.h>
 
+static XINPUT_STATE inputX;
+
 //チュートリアル弾初期化
 void InitializeTutorialBullet(Bullet& TutorialBullet)
 {
@@ -72,11 +74,22 @@ void InitializePlayerBullet(Bullet PlayerBullet[],int PlayerShotNumber, Player& 
 //プレイヤー弾ルーチン
 void UpdatePlayerBullet(Bullet PlayerBullet[], int PlayerShotNumber , Player& player1, DINPUT_JOYSTATE input, int shotSound,int& remainingBullet)
 {
-    //コントローラーの入力状態を取得
-    GetJoypadDirectInputState(DX_INPUT_PAD1, &input);
+    //インプット
+    if (GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_360
+        || GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_ONE)
+    {
+        GetJoypadXInputState(DX_INPUT_PAD1, &inputX);
+    }
+    else
+    {
+        GetJoypadDirectInputState(DX_INPUT_PAD1, &input);
+    }
 
     //RBボタンを押したときに射撃する
-    if (input.Buttons[5] > 0 && remainingBullet > 0 || input.Buttons[7] > 0 && remainingBullet > 0)
+    if (input.Buttons[5] > 0 && remainingBullet > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
+        || input.Buttons[7] > 0 && remainingBullet > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
+        || inputX.RightTrigger > 0 && remainingBullet > 0
+        || inputX.Buttons[XINPUT_BUTTON_RIGHT_SHOULDER] > 0 && remainingBullet > 0)
     {
         //前フレームでショットボタンを押したかのフラグがfalseだったら弾を発射
         if (player1.PrevShotFlag == false)
