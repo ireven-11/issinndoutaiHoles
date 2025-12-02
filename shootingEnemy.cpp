@@ -54,33 +54,33 @@ void UpdateShootingEnemy(Enemy shootingEnemy[],int& scroll)
 		if (i < 4 && i > 1 && !shootingEnemy[0].isInScreenFlag && !shootingEnemy[1].isInScreenFlag)
 		{
 			//’¼i
-			shootingEnemy[i].x1 -= shootingEnemy[i].speed * 3;
-			shootingEnemy[i].x2 -= shootingEnemy[i].speed * 3;
+			shootingEnemy[i].x1 -= enemy_speed * 3;
+			shootingEnemy[i].x2 -= enemy_speed * 3;
 
 			//3‘Ì–Úã‚ÉˆÚ“®
 			if (shootingEnemy[2].changeMoveFlag)
 			{
-				shootingEnemy[2].y1 += shootingEnemy[2].speed * 5;
-				shootingEnemy[2].y2 += shootingEnemy[2].speed * 5;
+				shootingEnemy[2].y1 += enemy_speed * 5;
+				shootingEnemy[2].y2 += enemy_speed * 5;
 			}
 			//3‘Ì–Ú‰º‚ÉˆÚ“®
 			else if (!shootingEnemy[2].changeMoveFlag)
 			{
-				shootingEnemy[2].y1 -= shootingEnemy[2].speed * 2;
-				shootingEnemy[2].y2 -= shootingEnemy[2].speed * 2;
+				shootingEnemy[2].y1 -= enemy_speed * 2;
+				shootingEnemy[2].y2 -= enemy_speed * 2;
 			}
 
 			//4‘Ì–Úã‚ÉˆÚ“®
 			if (shootingEnemy[3].changeMoveFlag)
 			{
-				shootingEnemy[3].y1 += shootingEnemy[3].speed * 2;
-				shootingEnemy[3].y2 += shootingEnemy[3].speed * 2;
+				shootingEnemy[3].y1 += enemy_speed * 2;
+				shootingEnemy[3].y2 += enemy_speed * 2;
 			}
 			//4‘Ì–Ú‰º‚ÉˆÚ“®
 			else if (!shootingEnemy[3].changeMoveFlag)
 			{
-				shootingEnemy[3].y1 -= shootingEnemy[3].speed * 5;
-				shootingEnemy[3].y2 -= shootingEnemy[3].speed * 5;
+				shootingEnemy[3].y1 -= enemy_speed * 5;
+				shootingEnemy[3].y2 -= enemy_speed * 5;
 			}
 
 			//‰Ÿ‚µ–ß‚èˆ—{ˆÚ“®•ûŒü‚Ì”½“]
@@ -103,8 +103,8 @@ void UpdateShootingEnemy(Enemy shootingEnemy[],int& scroll)
 			//Å‰‚¾‚¯’¼i
 			if (scroll > 950 && scroll < 1100)
 			{
-				shootingEnemy[i].x1 -= shootingEnemy[i].speed * 3;
-				shootingEnemy[i].x2 -= shootingEnemy[i].speed * 3;
+				shootingEnemy[i].x1 -= enemy_speed * 3;
+				shootingEnemy[i].x2 -= enemy_speed * 3;
 			}
 
 			if (scroll > 1100 && scroll < 2500)
@@ -112,14 +112,14 @@ void UpdateShootingEnemy(Enemy shootingEnemy[],int& scroll)
 				//ã‚ÉˆÚ“®
 				if (shootingEnemy[i].changeMoveFlag)
 				{
-					shootingEnemy[i].y1 += shootingEnemy[i].speed * 5;
-					shootingEnemy[i].y2 += shootingEnemy[i].speed * 5;
+					shootingEnemy[i].y1 += enemy_speed * 5;
+					shootingEnemy[i].y2 += enemy_speed * 5;
 				}
 				//‰º‚ÉˆÚ“®
 				else if (!shootingEnemy[i].changeMoveFlag)
 				{
-					shootingEnemy[i].y1 -= shootingEnemy[i].speed * 5;
-					shootingEnemy[i].y2 -= shootingEnemy[i].speed * 5;
+					shootingEnemy[i].y1 -= enemy_speed * 5;
+					shootingEnemy[i].y2 -= enemy_speed * 5;
 				}
 
 				//‰Ÿ‚µ–ß‚èˆ—{ˆÚ“®•ûŒü‚Ì”½“]
@@ -140,8 +140,8 @@ void UpdateShootingEnemy(Enemy shootingEnemy[],int& scroll)
 			//ÅŒã‚Í’¼i
 			if (scroll > 2500)
 			{
-				shootingEnemy[i].x1 -= shootingEnemy[i].speed * 5;
-				shootingEnemy[i].x2 -= shootingEnemy[i].speed * 5;
+				shootingEnemy[i].x1 -= enemy_speed * 5;
+				shootingEnemy[i].x2 -= enemy_speed * 5;
 			}
 		}
 		//5‘Ì–Ú‚ÍƒWƒOƒUƒO“G‚É¬‚º‚Äo‚·
@@ -149,20 +149,20 @@ void UpdateShootingEnemy(Enemy shootingEnemy[],int& scroll)
 		{
 			if (shootingEnemy[4].x1 >= 1700)
 			{
-				shootingEnemy[4].x1 -= shootingEnemy[4].speed * 5;
-				shootingEnemy[4].x2 -= shootingEnemy[4].speed * 5;
+				shootingEnemy[4].x1 -= enemy_speed * 5;
+				shootingEnemy[4].x2 -= enemy_speed * 5;
 			}
 			//ã‚ÉˆÚ“®
 			else if (shootingEnemy[4].changeMoveFlag)
 			{
-				shootingEnemy[4].y1 += shootingEnemy[4].speed * 4;
-				shootingEnemy[4].y2 += shootingEnemy[4].speed * 4;
+				shootingEnemy[4].y1 += enemy_speed * 4;
+				shootingEnemy[4].y2 += enemy_speed * 4;
 			}
 			//‰º‚ÉˆÚ“®
 			else if (!shootingEnemy[i].changeMoveFlag)
 			{
-				shootingEnemy[4].y1 -= shootingEnemy[4].speed * 4;
-				shootingEnemy[4].y2 -= shootingEnemy[4].speed * 4;
+				shootingEnemy[4].y1 -= enemy_speed * 4;
+				shootingEnemy[4].y2 -= enemy_speed * 4;
 			}
 
 			//‰Ÿ‚µ–ß‚èˆ—{ˆÚ“®•ûŒü‚Ì”½“]
@@ -181,8 +181,8 @@ void UpdateShootingEnemy(Enemy shootingEnemy[],int& scroll)
 
 			if (scroll > 6750)
 			{
-				shootingEnemy[4].x1 -= shootingEnemy[4].speed * 8;
-				shootingEnemy[4].x2 -= shootingEnemy[4].speed * 8;
+				shootingEnemy[4].x1 -= enemy_speed * 8;
+				shootingEnemy[4].x2 -= enemy_speed * 8;
 			}
 		}
 		//6‘Ì–ÚˆÈ~‚Íwave4‚Å‚¾‚·
@@ -191,23 +191,23 @@ void UpdateShootingEnemy(Enemy shootingEnemy[],int& scroll)
 			//‰æ–Ê“à‚É‚¢‚È‚©‚È‚Á‚½‚ç¶‚É’¼i
 			if (shootingEnemy[i].x2 > 1500 && shootingEnemy[i].changeMoveFlag)
 			{
-				shootingEnemy[i].x1 -= shootingEnemy[i].speed * 3;
-				shootingEnemy[i].x2 -= shootingEnemy[i].speed * 3;
+				shootingEnemy[i].x1 -= enemy_speed * 3;
+				shootingEnemy[i].x2 -= enemy_speed * 3;
 			}
 			//ŽOŠp‚ð•`‚­—l‚É“®‚­
 			else if (shootingEnemy[i].x1 > 1300 && shootingEnemy[i].changeMoveFlag)
 			{
-				shootingEnemy[i].x1 -= shootingEnemy[i].speed * 3;
-				shootingEnemy[i].x2 -= shootingEnemy[i].speed * 3;
-				shootingEnemy[i].y1 -= shootingEnemy[i].speed * 3;
-				shootingEnemy[i].y2 -= shootingEnemy[i].speed * 3;
+				shootingEnemy[i].x1 -= enemy_speed * 3;
+				shootingEnemy[i].x2 -= enemy_speed * 3;
+				shootingEnemy[i].y1 -= enemy_speed * 3;
+				shootingEnemy[i].y2 -= enemy_speed * 3;
 			}
 			else
 			{
 				if (shootingEnemy[i].y1 < 1100 - i * 100 && shootingEnemy[i].changeMoveFlag)
 				{
-					shootingEnemy[i].y1 += shootingEnemy[i].speed * 4;
-					shootingEnemy[i].y2 += shootingEnemy[i].speed * 4;
+					shootingEnemy[i].y1 += enemy_speed * 4;
+					shootingEnemy[i].y2 += enemy_speed * 4;
 
 					if (shootingEnemy[i].y1 > 1100 - i * 100)
 					{
@@ -216,10 +216,10 @@ void UpdateShootingEnemy(Enemy shootingEnemy[],int& scroll)
 				}
 				else
 				{
-					shootingEnemy[i].x1 += shootingEnemy[i].speed * 3;
-					shootingEnemy[i].x2 += shootingEnemy[i].speed * 3;
-					shootingEnemy[i].y1 -= shootingEnemy[i].speed * 3;
-					shootingEnemy[i].y2 -= shootingEnemy[i].speed * 3;
+					shootingEnemy[i].x1 += enemy_speed * 3;
+					shootingEnemy[i].x2 += enemy_speed * 3;
+					shootingEnemy[i].y1 -= enemy_speed * 3;
+					shootingEnemy[i].y2 -= enemy_speed * 3;
 
 					if (shootingEnemy[i].x1 > 1500)
 					{

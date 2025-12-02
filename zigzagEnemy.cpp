@@ -125,23 +125,23 @@ void UpdateZigzagEnemy(Enemy zigzagEnemy[])
         {
             if (zigzagEnemy[i].isInScreenFlag)
             {
-                zigzagEnemy[i].x1 -= zigzagEnemy[i].speed * 2 + 1;
-                zigzagEnemy[i].x2 -= zigzagEnemy[i].speed * 2 + 1;
+                zigzagEnemy[i].x1 -= enemy_speed * 2 + 1;
+                zigzagEnemy[i].x2 -= enemy_speed * 2 + 1;
 
                 if (zigzagEnemy[i].x1 < 1300 && zigzagEnemy[i].x1 > 1000)
                 {
-                    zigzagEnemy[i].y1 += zigzagEnemy[i].speed * 3;
-                    zigzagEnemy[i].y2 += zigzagEnemy[i].speed * 3;
+                    zigzagEnemy[i].y1 += enemy_speed * 3;
+                    zigzagEnemy[i].y2 += enemy_speed * 3;
                 }
                 else if (zigzagEnemy[i].x1 < 1000 && zigzagEnemy[i].x1 > 700)
                 {
-                    zigzagEnemy[i].y1 -= zigzagEnemy[i].speed * 3;
-                    zigzagEnemy[i].y2 -= zigzagEnemy[i].speed * 3;
+                    zigzagEnemy[i].y1 -= enemy_speed * 3;
+                    zigzagEnemy[i].y2 -= enemy_speed * 3;
                 }
                 else if (zigzagEnemy[i].x1 < 700)
                 {
-                    zigzagEnemy[i].y1 += zigzagEnemy[i].speed * 3;
-                    zigzagEnemy[i].y2 += zigzagEnemy[i].speed * 3;
+                    zigzagEnemy[i].y1 += enemy_speed * 3;
+                    zigzagEnemy[i].y2 += enemy_speed * 3;
                 }
             }
         }

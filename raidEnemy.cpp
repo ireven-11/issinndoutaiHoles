@@ -97,26 +97,26 @@ void UpdateRaidEnemy(Enemy raidEnemy[],int& scroll, int wave2)
                     //最後に左に移動
                     if (raidEnemy[i].y1 < 0 + i * 50 && raidEnemy[i].changeMoveFlag)
                     {
-                        raidEnemy[i].x1 -= raidEnemy[i].speed * 8;
-                        raidEnemy[i].x2 -= raidEnemy[i].speed * 8;
+                        raidEnemy[i].x1 -= enemy_speed * 8;
+                        raidEnemy[i].x2 -= enemy_speed * 8;
                     }
                     //画面外左下まできたら上に移動
                     else if (raidEnemy[i].x1 > 1925)
                     {
-                        raidEnemy[i].y1 -= raidEnemy[i].speed * 3;
-                        raidEnemy[i].y2 -= raidEnemy[i].speed * 3;
+                        raidEnemy[i].y1 -= enemy_speed * 3;
+                        raidEnemy[i].y2 -= enemy_speed * 3;
                     }
                     //画面下外まで移動したら右に移動
                     else if (1925 > raidEnemy[i].x1 && raidEnemy[i].y1 > 1000 && !raidEnemy[i].changeMoveFlag)
                     {
-                        raidEnemy[i].x1 += raidEnemy[i].speed * 3;
-                        raidEnemy[i].x2 += raidEnemy[i].speed * 3;
+                        raidEnemy[i].x1 += enemy_speed * 3;
+                        raidEnemy[i].x2 += enemy_speed * 3;
                     }
                     //最初に下に移動
                     else if (!raidEnemy[i].changeMoveFlag)
                     {
-                        raidEnemy[i].y1 += raidEnemy[i].speed * 3;
-                        raidEnemy[i].y2 += raidEnemy[i].speed * 3;
+                        raidEnemy[i].y1 += enemy_speed * 3;
+                        raidEnemy[i].y2 += enemy_speed * 3;
                     }
                 }
                 //第二小隊の移動
@@ -125,26 +125,26 @@ void UpdateRaidEnemy(Enemy raidEnemy[],int& scroll, int wave2)
                     //最後に左に移動
                     if (raidEnemy[i].y1 < 0 + j * 50 && raidEnemy[i].changeMoveFlag)
                     {
-                        raidEnemy[i].x1 -= raidEnemy[i].speed * 5;
-                        raidEnemy[i].x2 -= raidEnemy[i].speed * 5;
+                        raidEnemy[i].x1 -= enemy_speed * 5;
+                        raidEnemy[i].x2 -= enemy_speed * 5;
                     }
                     //画面外左下まできたら上に移動
                     else if (raidEnemy[i].x1 > 1925)
                     {
-                        raidEnemy[i].y1 -= raidEnemy[i].speed * 3;
-                        raidEnemy[i].y2 -= raidEnemy[i].speed * 3;
+                        raidEnemy[i].y1 -= enemy_speed * 3;
+                        raidEnemy[i].y2 -= enemy_speed * 3;
                     }
                     //画面下外まで移動したら右に移動
                     else if (1925 > raidEnemy[i].x1 && raidEnemy[i].y1 > 1000 && !raidEnemy[i].changeMoveFlag)
                     {
-                        raidEnemy[i].x1 += raidEnemy[i].speed * 3;
-                        raidEnemy[i].x2 += raidEnemy[i].speed * 3;
+                        raidEnemy[i].x1 += enemy_speed * 3;
+                        raidEnemy[i].x2 += enemy_speed * 3;
                     }
                     //最初に下に移動
                     else if (!raidEnemy[i].changeMoveFlag)
                     {
-                        raidEnemy[i].y1 += raidEnemy[i].speed * 2;
-                        raidEnemy[i].y2 += raidEnemy[i].speed * 2;
+                        raidEnemy[i].y1 += enemy_speed * 2;
+                        raidEnemy[i].y2 += enemy_speed * 2;
                     }
                     j++;
                 }
@@ -158,14 +158,14 @@ void UpdateRaidEnemy(Enemy raidEnemy[],int& scroll, int wave2)
                     //最後に左に移動
                     if (raidEnemy[i].y1 > 950 - i * 50 && raidEnemy[i].changeMoveFlag)
                     {
-                        raidEnemy[i].x1 -= raidEnemy[i].speed * 8;
-                        raidEnemy[i].x2 -= raidEnemy[i].speed * 8;
+                        raidEnemy[i].x1 -= enemy_speed * 8;
+                        raidEnemy[i].x2 -= enemy_speed * 8;
                     }
                     //画面外右まできたら下に移動
                     else if (raidEnemy[i].x1 > 1925 && raidEnemy[i - 1].x1 > 1925)
                     {
-                        raidEnemy[i].y1 += raidEnemy[i].speed * 3;
-                        raidEnemy[i].y2 += raidEnemy[i].speed * 3;
+                        raidEnemy[i].y1 += enemy_speed * 3;
+                        raidEnemy[i].y2 += enemy_speed * 3;
                     }
                     //画面上外まで移動したら右に移動
                     else if (1925 > raidEnemy[i].x1 && raidEnemy[i].y2 < 0 && !raidEnemy[i].changeMoveFlag)
@@ -177,15 +177,15 @@ void UpdateRaidEnemy(Enemy raidEnemy[],int& scroll, int wave2)
                         }
                         else
                         {
-                            raidEnemy[i].x1 += raidEnemy[i].speed * 3;
-                            raidEnemy[i].x2 += raidEnemy[i].speed * 3;
+                            raidEnemy[i].x1 += enemy_speed * 3;
+                            raidEnemy[i].x2 += enemy_speed * 3;
                         }
                     }
                     //最初に上に移動
                     else if (!raidEnemy[i].changeMoveFlag && raidEnemy[i].x1 < 1925)
                     {
-                        raidEnemy[i].y1 -= raidEnemy[i].speed * 3;
-                        raidEnemy[i].y2 -= raidEnemy[i].speed * 3;
+                        raidEnemy[i].y1 -= enemy_speed * 3;
+                        raidEnemy[i].y2 -= enemy_speed * 3;
                     }
                 }
                 //第二小隊の移動
@@ -194,14 +194,14 @@ void UpdateRaidEnemy(Enemy raidEnemy[],int& scroll, int wave2)
                     //最後に左に移動
                     if (raidEnemy[i].y1 > 950 - j * 50 && raidEnemy[i].changeMoveFlag)
                     {
-                        raidEnemy[i].x1 -= raidEnemy[i].speed * 5;
-                        raidEnemy[i].x2 -= raidEnemy[i].speed * 5;
+                        raidEnemy[i].x1 -= enemy_speed * 5;
+                        raidEnemy[i].x2 -= enemy_speed * 5;
                     }
                     //画面外右まできたら下に移動
                     else if (raidEnemy[i].x1 > 1925 && raidEnemy[i - 1].x1 > 1925)
                     {
-                        raidEnemy[i].y1 += raidEnemy[i].speed * 3;
-                        raidEnemy[i].y2 += raidEnemy[i].speed * 3;
+                        raidEnemy[i].y1 += enemy_speed * 3;
+                        raidEnemy[i].y2 += enemy_speed * 3;
                     }
                     //画面上外まで移動したら右に移動
                     else if (1925 > raidEnemy[i].x1 && raidEnemy[i].y2 < 0 && !raidEnemy[i].changeMoveFlag)
@@ -213,15 +213,15 @@ void UpdateRaidEnemy(Enemy raidEnemy[],int& scroll, int wave2)
                         }
                         else
                         {
-                            raidEnemy[i].x1 += raidEnemy[i].speed * 3;
-                            raidEnemy[i].x2 += raidEnemy[i].speed * 3;
+                            raidEnemy[i].x1 += enemy_speed * 3;
+                            raidEnemy[i].x2 += enemy_speed * 3;
                         }
                     }
                     //最初に上に移動
                     else if (!raidEnemy[i].changeMoveFlag && raidEnemy[i].x1 < 1925)
                     {
-                        raidEnemy[i].y1 -= raidEnemy[i].speed * 2;
-                        raidEnemy[i].y2 -= raidEnemy[i].speed * 2;
+                        raidEnemy[i].y1 -= enemy_speed * 2;
+                        raidEnemy[i].y2 -= enemy_speed * 2;
                     }
                     j++;
                 }

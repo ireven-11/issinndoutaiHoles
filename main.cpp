@@ -34,7 +34,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	const int hyaku = 100;
 	const int sannbyaku = 300;
 
-	ChangeWindowMode(TRUE);				   //ウィンドウモードにする
+	ChangeWindowMode(FALSE);				   //ウィンドウモードにする
 	SetWindowStyleMode(7);				   //最大化ボタンが存在するウインドウモードに変更
 
 	// 画面サイズをデスクトップのサイズと同じにする
@@ -50,8 +50,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	// ウインドウの位置は画面中心付近にする
 	SetWindowPosition((DesktopW - WIDTH) / 2, (DesktopH - HEIGHT) / 2);
 
-	//ライブラリを初期化
-	DxLib_Init();
+	//ライブラリ初期化でエラー起きたら終了
+	if (DxLib_Init() == -1)
+	{
+		return -1;
+	}
 
 	// ウインドウサイズ情報の初期化
 	GetWindowSize(&WindowW, &WindowH);
@@ -59,11 +62,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	SetMainWindowText("イッシンドウタイホールズ");
 	SetDrawScreen(DX_SCREEN_BACK);		   //背景をセットする
 	SetGraphMode(initialWIDTH, HEIGHT, 32);//ウィンドウのサイズとカラーモードを決める
-	//ライブラリ初期化でエラー起きたら終了
-	if (DxLib_Init() == -1)
-	{
-		return -1;
-	}
+	
 	//---------------
 
 	//変数宣言
@@ -184,6 +183,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	PrevBbuttonFlag		 = false;
 	startVideoCount		 = 0;
 	suctionSucceedEffectFlag = false;
+	shotCount = 0;
 
 	//フォントを使えるようにする
 	AddFontResourceEx("font/BugMaruUI.ttc", FR_PRIVATE, NULL);
@@ -717,11 +717,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 				}
 				for (int i = 0; i < shootingEnemyShotNumber; i++)
 				{
-					for (int j = 0; j < shootingEnemyNumber; j++)
-					{
-						//うちまくる敵弾描画
-						DrawShootingEnemyBullet(shootingEnemyBullet[i]);
-					}
+					//うちまくる敵弾描画
+					DrawShootingEnemyBullet(shootingEnemyBullet[i]);
 				}
 				DrawUI(scroll, wave4, selectscene, FontSize50, score, scoreMagnificatoin, player1, remainingBulletGraph, remainingBullet, HPgraph, damage, tutorial1and2Flag, initialWIDTH, HEIGHT, tutorial4Flag, FontSize100, BrinkCounter, tutorial3Flag, startVideoCount, warningGraph, warningSound);
 
@@ -750,6 +747,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		case OVER:
 			gameOverScene(overSoundFlag, overSound, BrinkCounter, initialWIDTH, HEIGHT, FontSize50, FontSize100, score, scoreMagnificatoin,  startVideoCount, FontSize300, selectscene);
 
+			StopSoundMem(warningSound);
+
 			break;
 		}
 
@@ -764,6 +763,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		// 裏画面の内容を表画面に反映
 		ScreenFlip();
 	}
+
 	DxLib_End();
 	return 0;
 }

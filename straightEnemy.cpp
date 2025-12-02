@@ -8,12 +8,10 @@ void InitializeStraightEnemy(Enemy straightEnemy[])
     int midori_teki = LoadGraph("img/midori_teki.png");
     int i = 0;
 
-    
-
     while (true)
     {
         //‘æˆê¬‘à
-        if (i <= straightEnemyNumber)
+        if (i < straightEnemyNumber)
         {
             while (true)
             {
@@ -45,7 +43,7 @@ void InitializeStraightEnemy(Enemy straightEnemy[])
         }
 
         //‘æ“ñ¬‘à
-        if (i <= straightEnemyNumber)
+        if (i < straightEnemyNumber)
         {
             while (true)
             {
@@ -77,11 +75,11 @@ void InitializeStraightEnemy(Enemy straightEnemy[])
         }
 
         //‘æO¬‘à
-        if (i <= straightEnemyNumber)
+        if (i < straightEnemyNumber)
         {
             while (true)
             {
-                i++;
+                //i++;
 
                 //‰æ‘œ‚ğ‘ã“ü
                 straightEnemy[i].graph = midori_teki;
@@ -100,6 +98,8 @@ void InitializeStraightEnemy(Enemy straightEnemy[])
                 straightEnemy[i].x2 = straightEnemy[i].x1 + 100;
                 straightEnemy[i].y1 = 466;
                 straightEnemy[i].y2 = straightEnemy[i].y1 + 100;
+
+                i++;
 
                 if (i % 3 == 0)
                 {
@@ -123,14 +123,14 @@ void UpdateStraightEnemy(Enemy straightEnemy[])
         if (straightEnemy[i].isInScreenFlag)
         {
             //ã‘¤‚Æ‰º‘¤‚Ì¬‘à‚ÌˆÚ“®
-            straightEnemy[i].x1 -= straightEnemy[i].speed * 3 - 1;
-            straightEnemy[i].x2 -= straightEnemy[i].speed * 3 - 1;
+            straightEnemy[i].x1 -= enemy_speed * 3 - 1;
+            straightEnemy[i].x2 -= enemy_speed * 3 - 1;
 
             //^‚ñ’†‚Ì2‘Ì‚¾‚¯ŠïP‚ğdŠ|‚¯‚é
             if (i > 6)
             {
-                straightEnemy[i].x1 -= straightEnemy[i].speed * 4 - 1;
-                straightEnemy[i].x2 -= straightEnemy[i].speed * 4 - 1;
+                straightEnemy[i].x1 -= enemy_speed * 4 - 1;
+                straightEnemy[i].x2 -= enemy_speed * 4 - 1;
             }
         }
     }

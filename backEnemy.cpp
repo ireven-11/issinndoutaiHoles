@@ -74,8 +74,8 @@ void UpdateBackEnemy(Enemy backEnemy[],int wave1,int& scroll,Player& player2, in
 			//座標が1000より小さくwave2のときに右に移動
 			if (backEnemy[i].x1 < 1000 && scroll > wave1 && !backEnemy[i].changeMoveFlag)
 			{
-				backEnemy[i].x1 += backEnemy[i].speed * 2;
-				backEnemy[i].x2 += backEnemy[i].speed * 2;
+				backEnemy[i].x1 += enemy_speed * 2;
+				backEnemy[i].x2 += enemy_speed * 2;
 			}
 
 			if (backEnemy[i].x1 == 1000)
@@ -87,33 +87,33 @@ void UpdateBackEnemy(Enemy backEnemy[],int wave1,int& scroll,Player& player2, in
 			//スクロールが一定になったら左に移動を始める
 			if (backEnemy[i].changeMoveFlag)
 			{
-				backEnemy[i].x1 -= backEnemy[i].speed * 2;
-				backEnemy[i].x2 -= backEnemy[i].speed * 2;
+				backEnemy[i].x1 -= enemy_speed * 2;
+				backEnemy[i].x2 -= enemy_speed * 2;
 
 				//プレイヤーと敵のyの距離によって移動を変える
 				if (backEnemy[i].y1 - player2.y < 0)
 				{
-					backEnemy[i].y1 += backEnemy[i].speed;
-					backEnemy[i].y2 += backEnemy[i].speed;
+					backEnemy[i].y1 += enemy_speed;
+					backEnemy[i].y2 += enemy_speed;
 				}
 				else if (backEnemy[i].y1 - player2.y > 0)
 				{
-					backEnemy[i].y1 -= backEnemy[i].speed;
-					backEnemy[i].y2 -= backEnemy[i].speed;
+					backEnemy[i].y1 -= enemy_speed;
+					backEnemy[i].y2 -= enemy_speed;
 				}
 			}
 		}
 		//敵で壁を作る(途中から移動しなくなる)
 		else if (i > 1 && i < 12 && scroll > wave3 && scroll % 2 == 0)
 		{
-			backEnemy[i].x1 += backEnemy[i].speed;
-			backEnemy[i].x2 += backEnemy[i].speed;
+			backEnemy[i].x1 += enemy_speed;
+			backEnemy[i].x2 += enemy_speed;
 		}
 		//でかいやつの移動
 		else if(scroll > wave3 && scroll % 5 == 0 && i == 12)
 		{
-			backEnemy[i].x1 += backEnemy[i].speed;
-			backEnemy[i].x2 += backEnemy[i].speed;
+			backEnemy[i].x1 += enemy_speed;
+			backEnemy[i].x2 += enemy_speed;
 		}
 
 		//クリア画面になったら存在フラグをfalseにする

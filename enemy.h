@@ -11,6 +11,7 @@ const int IniBackEnemyY = 100;
 const int fiveHundred = 500;
 const int hundredfifteen = 150;
 const int zero = 0;
+const int enemy_speed = 2;
 
 //構造体
 typedef struct Enemy
@@ -19,7 +20,6 @@ typedef struct Enemy
     int y1,y2;
     int graph;
     int bullet;
-    const int speed = 2;
     bool changeMoveFlag;
     bool isInScreenFlag;
     int explosionCount; //爆発エフェクト用カウント

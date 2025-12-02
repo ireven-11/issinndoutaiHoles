@@ -27,13 +27,13 @@ void UpdateTutorialEnemy(Enemy& TutorialEnemy)
     //ƒtƒ‰ƒO‚ªTRUE‚Ì‚Æ‚«‚Íã‚ÉˆÚ“®‚·‚é
     if (TutorialEnemy.changeMoveFlag == true)
     {
-        TutorialEnemy.y1 += TutorialEnemy.speed * 2;
-        TutorialEnemy.y2 += TutorialEnemy.speed * 2;
+        TutorialEnemy.y1 += enemy_speed * 2;
+        TutorialEnemy.y2 += enemy_speed * 2;
     }
     else
     {
-        TutorialEnemy.y1 -= TutorialEnemy.speed * 2;
-        TutorialEnemy.y2 -= TutorialEnemy.speed * 2;
+        TutorialEnemy.y1 -= enemy_speed * 2;
+        TutorialEnemy.y2 -= enemy_speed * 2;
     }
 
     //‰Ÿ‚µ–ß‚èˆ—{ˆÚ“®•ûŒü‚Ì”½“]
