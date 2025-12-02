@@ -506,6 +506,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 			break;
 		case PLAY:
+			//インプット
+			if (GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_360
+				|| GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_ONE)
+			{
+				GetJoypadXInputState(DX_INPUT_PAD1, &inputX);
+			}
+			else if (GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_SWITCH_PRO_CTRL)
+			{
+				GetJoypadDirectInputState(DX_INPUT_PAD1, &input);
+			}
+
 			//ポーズ画面終了効果音
 			if (finishPauseFlag)
 			{
@@ -705,7 +716,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			DrawUI(scroll, wave4, selectscene, FontSize50, score, scoreMagnificatoin, player1, remainingBulletGraph, remainingBullet, HPgraph, damage, tutorial1and2Flag, initialWIDTH, HEIGHT, tutorial4Flag, FontSize100, BrinkCounter, tutorial3Flag, startVideoCount, warningGraph, warningSound);
 
 			//Yボタンでポーズ画面へ移行(内部的にはX)
-			if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_X
+			if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_X && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
 				|| inputX.Buttons[XINPUT_BUTTON_X] > 0)
 			{
 				// ゲーム画面をバッファに保存
