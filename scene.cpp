@@ -46,7 +46,7 @@ void pauseScene(bool& startPauseFlag,int& BrinkCounter,int pauseScreenHandle,int
 	//Bボタンでタイトルに戻る
 	/*DrawStringToHandle(initialWIDTH / 2 - 125, HEIGHT / 2 + 50, "Bでタイトルへ", GetColor(255, 255, 255), FontSize50);*/
 	DrawStringToHandle(initialWIDTH / 2 - 125, HEIGHT / 2 + 50, "Aでタイトルへ", GetColor(255, 255, 255), FontSize50);
-	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
+	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B /*&& GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL*/
 		|| inputX.Buttons[XINPUT_BUTTON_A] > 0)
 	{
 		StopSoundMem(bgm); //bgmを止める
@@ -58,7 +58,7 @@ void pauseScene(bool& startPauseFlag,int& BrinkCounter,int pauseScreenHandle,int
 	//Xボタンでプレイ画面へ戻る
 	/*DrawStringToHandle(initialWIDTH / 2 - 150, HEIGHT / 2, "Xでプレイ画面へ", GetColor(255, 255, 255), FontSize50);*/
 	DrawStringToHandle(initialWIDTH / 2 - 150, HEIGHT / 2, "Yでプレイ画面へ", GetColor(255, 255, 255), FontSize50);
-	if (input.Buttons[2] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
+	if (input.Buttons[2] > 0 /*&& GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL*/
 		|| inputX.Buttons[XINPUT_BUTTON_Y] > 0)
 	{
 		//ポーズ画面終了フラグをtrueにする
@@ -133,7 +133,7 @@ void gameOverScene(bool& overSoundFlag,int overSound,int& BrinkCounter,int initi
 	}
 
 	//Bボタンでタイトルに戻る
-	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
+	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B /*&& GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL*/
 		|| inputX.Buttons[XINPUT_BUTTON_A] > 0)
 	{
 		StopSoundMem(overSound);
@@ -217,7 +217,7 @@ void clearScene(Player& player1, int initialWIDTH, Player& player2, int& BrinkCo
 		}
 
 		//Bボタンでタイトルに戻る
-		if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
+		if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B /*&& GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL*/
 			|| inputX.Buttons[XINPUT_BUTTON_A] > 0)
 		{
 			startVideoCount = 0;

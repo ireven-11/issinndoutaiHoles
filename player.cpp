@@ -271,8 +271,8 @@ void UpdatePlayer(Player& player1, Player& player2, DINPUT_JOYSTATE input, Bulle
 		}
 
 		//LBƒ{ƒ^ƒ“‚ð‰Ÿ‚µ‚Ä‚éŠÔ‚¾‚¯’e‚ð‹z‚¤
-		if (input.Buttons[4] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
-			|| input.Buttons[6] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
+		if (input.Buttons[4] > 0 /*&& GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL*/
+			|| input.Buttons[6] > 0 /*&& GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL*/
 			|| inputX.LeftTrigger > 0
 			|| inputX.Buttons[XINPUT_BUTTON_LEFT_SHOULDER] > 0)
 		{
@@ -386,10 +386,10 @@ void DrawPlayer(Player& player1, Player& player2, DINPUT_JOYSTATE input,int suct
 
 	if (player1.isInScreenFlag && player2.isInScreenFlag)
 	{
-		if (input.Buttons[4] > 0 && input.Buttons[5] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
-			|| input.Buttons[6] > 0 && input.Buttons[7] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
-			|| input.Buttons[4] > 0 && input.Buttons[7] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
-			|| input.Buttons[6] > 0 && input.Buttons[5] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
+		if (input.Buttons[4] > 0 && input.Buttons[5] > 0 /*&& GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL*/
+			|| input.Buttons[6] > 0 && input.Buttons[7] > 0 /*&& GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL*/
+			|| input.Buttons[4] > 0 && input.Buttons[7] > 0 /*&& GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL*/
+			|| input.Buttons[6] > 0 && input.Buttons[5] > 0 /*&& GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL*/
 			|| inputX.RightTrigger > 0 && inputX.LeftTrigger > 0
 			|| inputX.Buttons[XINPUT_BUTTON_RIGHT_SHOULDER] > 0 && inputX.Buttons[XINPUT_BUTTON_LEFT_SHOULDER] > 0
 			|| inputX.RightTrigger > 0 && inputX.Buttons[XINPUT_BUTTON_LEFT_SHOULDER] > 0
@@ -419,8 +419,8 @@ void DrawPlayer(Player& player1, Player& player2, DINPUT_JOYSTATE input,int suct
 			suctionEffectCount--;
 
 		}
-		else if (input.Buttons[5] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
-			|| input.Buttons[7] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
+		else if (input.Buttons[5] > 0 /*&& GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL*/
+			|| input.Buttons[7] > 0 /*&& GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL*/
 			|| inputX.RightTrigger > 0
 			|| inputX.Buttons[XINPUT_BUTTON_RIGHT_SHOULDER] > 0)
 		{
@@ -437,8 +437,8 @@ void DrawPlayer(Player& player1, Player& player2, DINPUT_JOYSTATE input,int suct
 				DrawGraph(player2.x, player2.y, player2.normalgraph, TRUE);
 			}
 		}
-		else if (input.Buttons[4] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
-			|| input.Buttons[6] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
+		else if (input.Buttons[4] > 0 /*&& GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL*/
+			|| input.Buttons[6] > 0 /*&& GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL*/
 			|| inputX.LeftTrigger > 0
 			|| inputX.Buttons[XINPUT_BUTTON_LEFT_SHOULDER] > 0)
 		{

@@ -86,8 +86,8 @@ void UpdatePlayerBullet(Bullet PlayerBullet[], int PlayerShotNumber , Player& pl
     }
 
     //RBƒ{ƒ^ƒ“‚ð‰Ÿ‚µ‚½‚Æ‚«‚ÉŽËŒ‚‚·‚é
-    if (input.Buttons[5] > 0 && remainingBullet > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
-        || input.Buttons[7] > 0 && remainingBullet > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
+    if (input.Buttons[5] > 0 && remainingBullet > 0 /*&& GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL*/
+        || input.Buttons[7] > 0 && remainingBullet > 0 /*&& GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL*/
         || inputX.RightTrigger > 0 && remainingBullet > 0
         || inputX.Buttons[XINPUT_BUTTON_RIGHT_SHOULDER] > 0 && remainingBullet > 0)
     {
