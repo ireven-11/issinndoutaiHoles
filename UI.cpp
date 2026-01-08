@@ -3,7 +3,7 @@
 #include"player.h"
 #include"scene.h"
 
-void DrawUI(int& scroll,int wave4,int& selectscene,int FontSize50,int& score,int& scoreMagnificatoin,Player& player1,int remainingBulletGraph,int& remainingBullet,int HPgraph[], int& damage,bool& tutorial1and2Flag,int initialWIDTH,int HEIGHT,bool& tutorial4Flag,int FontSize100,int& BrinkCounter,bool& tutorial3Flag,int& startVideoCount,int warningGraph[],int warningSound)
+void DrawUI(int& scroll,int wave4,int& selectscene,int FontSize50,int& score,int& scoreMagnificatoin,Player& whitePlayer,int remainingBulletGraph,int& remainingBullet,int HPgraph[], int& damage,bool& tutorial1and2Flag,int initialWIDTH,int HEIGHT,bool& tutorial4Flag,int FontSize100,int& BrinkCounter,bool& tutorial3Flag,int& startVideoCount,int warningGraph[],int warningSound)
 {
 	switch (selectscene)
 	{
@@ -60,15 +60,15 @@ void DrawUI(int& scroll,int wave4,int& selectscene,int FontSize50,int& score,int
 		}
 
 		//écíeêîÇï\é¶
-		if (player1.y < 40)
+		if (whitePlayer.y < 40)
 		{
-			DrawExtendGraph(player1.x + 10, player1.y + 160, player1.x + 70, player1.y + 220, remainingBulletGraph, TRUE);
-			DrawFormatStringToHandle(player1.x + 70, player1.y + 170, GetColor(255, 255, 50), FontSize50, "Å~%d", remainingBullet);
+			DrawExtendGraph(whitePlayer.x + 10, whitePlayer.y + 160, whitePlayer.x + 70, whitePlayer.y + 220, remainingBulletGraph, TRUE);
+			DrawFormatStringToHandle(whitePlayer.x + 70, whitePlayer.y + 170, GetColor(255, 255, 50), FontSize50, "Å~%d", remainingBullet);
 		}
 		else
 		{
-			DrawExtendGraph(player1.x + 10, player1.y - 60, player1.x + 70, player1.y, remainingBulletGraph, TRUE);
-			DrawFormatStringToHandle(player1.x + 70, player1.y - 50, GetColor(255, 255, 50), FontSize50, "Å~%d", remainingBullet);
+			DrawExtendGraph(whitePlayer.x + 10, whitePlayer.y - 60, whitePlayer.x + 70, whitePlayer.y, remainingBulletGraph, TRUE);
+			DrawFormatStringToHandle(whitePlayer.x + 70, whitePlayer.y - 50, GetColor(255, 255, 50), FontSize50, "Å~%d", remainingBullet);
 		}
 
 		//HPÇï\é¶
@@ -83,15 +83,15 @@ void DrawUI(int& scroll,int wave4,int& selectscene,int FontSize50,int& score,int
 		}
 
 		//écíeêîÇï\é¶
-		if (player1.y < 40)
+		if (whitePlayer.y < 40)
 		{
-			DrawExtendGraph(player1.x + 10, player1.y + 160, player1.x + 70, player1.y + 220, remainingBulletGraph, TRUE);
-			DrawFormatStringToHandle(player1.x + 70, player1.y + 170, GetColor(255, 255, 50), FontSize50, "Å~%d", remainingBullet);
+			DrawExtendGraph(whitePlayer.x + 10, whitePlayer.y + 160, whitePlayer.x + 70, whitePlayer.y + 220, remainingBulletGraph, TRUE);
+			DrawFormatStringToHandle(whitePlayer.x + 70, whitePlayer.y + 170, GetColor(255, 255, 50), FontSize50, "Å~%d", remainingBullet);
 		}
 		else
 		{
-			DrawExtendGraph(player1.x + 10, player1.y - 60, player1.x + 70, player1.y, remainingBulletGraph, TRUE);
-			DrawFormatStringToHandle(player1.x + 70, player1.y - 50, GetColor(255, 255, 50), FontSize50, "Å~%d", remainingBullet);
+			DrawExtendGraph(whitePlayer.x + 10, whitePlayer.y - 60, whitePlayer.x + 70, whitePlayer.y, remainingBulletGraph, TRUE);
+			DrawFormatStringToHandle(whitePlayer.x + 70, whitePlayer.y - 50, GetColor(255, 255, 50), FontSize50, "Å~%d", remainingBullet);
 		}
 
 		//HPÇï\é¶

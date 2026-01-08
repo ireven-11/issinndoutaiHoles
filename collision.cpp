@@ -7,7 +7,7 @@
 #include"scene.h"
 
 //プレイヤーの弾の当たり判定関数
-void hitPlayerBullet(Bullet PlayerBullet[], int PlayerShotNumber, Player& player2, Enemy zigzagEnemy[], int& score, Enemy straightEnemy[], Enemy shootingEnemy[], Enemy backEnemy[],Enemy raidEnemy[], int blockHP[], bool blockFlag[], int blockX1[], int blockX2[], int blockY1[], int blockY2[],int explosionSound)
+void hitPlayerBullet(Bullet PlayerBullet[], int PlayerShotNumber, Player& blackPlayer, Enemy zigzagEnemy[], int& score, Enemy straightEnemy[], Enemy shootingEnemy[], Enemy backEnemy[],Enemy raidEnemy[], int blockHP[], bool blockFlag[], int blockX1[], int blockX2[], int blockY1[], int blockY2[],int explosionSound)
 {
     for (int i = 0; i < PlayerShotNumber; i++)
     {
@@ -20,7 +20,7 @@ void hitPlayerBullet(Bullet PlayerBullet[], int PlayerShotNumber, Player& player
             }
 
             //黒に弾が当たったら消す（フレンドリーファイア）
-            if (player2.x < PlayerBullet[i].x2 && PlayerBullet[i].x2 < player2.x + 270 && player2.y < PlayerBullet[i].y1 && PlayerBullet[i].y1 < player2.y + 175)
+            if (blackPlayer.x < PlayerBullet[i].x2 && PlayerBullet[i].x2 < blackPlayer.x + 270 && blackPlayer.y < PlayerBullet[i].y1 && PlayerBullet[i].y1 < blackPlayer.y + 175)
             {
                 PlayerBullet[i].isInScreenFlag = false;
             }
@@ -155,10 +155,10 @@ void hitPlayerBullet(Bullet PlayerBullet[], int PlayerShotNumber, Player& player
 }
 
 //ゲームオーバー関数
-void gameOver(Bullet zigzagEnemyBullet[],Player& player1,int bgm,int suctionSound,int succeedSuctionSound,Enemy backEnemy[],Player player2,int playerDeathSound,int& selectscene,Enemy shootingEnemy[],Bullet shootingEnemyBullet[],Enemy straightEnemy[],Enemy zigzagEnemy[],Enemy raidEnemy[],int skullEffect[],int& damage,bool& invincibleFlag)
+void gameOver(Bullet zigzagEnemyBullet[],Player& whitePlayer,int bgm,int suctionSound,int succeedSuctionSound,Enemy backEnemy[],Player blackPlayer,int playerDeathSound,int& selectscene,Enemy shootingEnemy[],Bullet shootingEnemyBullet[],Enemy straightEnemy[],Enemy zigzagEnemy[],Enemy raidEnemy[],int skullEffect[],int& damage,bool& invincibleFlag)
 {
 	//無敵時間でなければ当たり判定に入る
-	if (!invincibleFlag && player1.x <= 1925 && player2.x <= 1925)
+	if (!invincibleFlag && whitePlayer.x <= 1925 && blackPlayer.x <= 1925)
 	{
 		//ジグザグ敵の弾に当たったらゲームオーバー画面へ移行
 		for (int i = 0; i < zigzagEnemyShotNumber; i++)
@@ -166,8 +166,8 @@ void gameOver(Bullet zigzagEnemyBullet[],Player& player1,int bgm,int suctionSoun
 			if (zigzagEnemyBullet[i].isInScreenFlag)
 			{
 				//白が敵のジグザグ敵弾に当たったらゲームオーバー
-				if (player1.x + nizyuugo < zigzagEnemyBullet[i].x1 && zigzagEnemyBullet[i].x1 < player1.x + hyakugozyuu && player1.y + nizyuugo < zigzagEnemyBullet[i].y1 && zigzagEnemyBullet[i].y1 < player1.y + hyakunanazyuugo
-				 || player1.x + nizyuugo < zigzagEnemyBullet[i].x1 && zigzagEnemyBullet[i].x1 < player1.x + hyakugozyuu && player1.y + nizyuugo < zigzagEnemyBullet[i].y2 && zigzagEnemyBullet[i].y2 < player1.y + hyakunanazyuugo)
+				if (whitePlayer.x + nizyuugo < zigzagEnemyBullet[i].x1 && zigzagEnemyBullet[i].x1 < whitePlayer.x + hyakugozyuu && whitePlayer.y + nizyuugo < zigzagEnemyBullet[i].y1 && zigzagEnemyBullet[i].y1 < whitePlayer.y + hyakunanazyuugo
+				 || whitePlayer.x + nizyuugo < zigzagEnemyBullet[i].x1 && zigzagEnemyBullet[i].x1 < whitePlayer.x + hyakugozyuu && whitePlayer.y + nizyuugo < zigzagEnemyBullet[i].y2 && zigzagEnemyBullet[i].y2 < whitePlayer.y + hyakunanazyuugo)
 				{
 					//ダメージをカウントする
 					damage++;
@@ -187,7 +187,7 @@ void gameOver(Bullet zigzagEnemyBullet[],Player& player1,int bgm,int suctionSoun
 						//どくろエフェクトをだす
 						for (int i = 0; i < 15; i++)
 						{
-							DrawExtendGraph(player1.x, player1.y, player1.x + 200, player1.y + 200, skullEffect[i], TRUE);
+							DrawExtendGraph(whitePlayer.x, whitePlayer.y, whitePlayer.x + 200, whitePlayer.y + 200, skullEffect[i], TRUE);
 							WaitTimer(100);
 						}
 
@@ -196,8 +196,8 @@ void gameOver(Bullet zigzagEnemyBullet[],Player& player1,int bgm,int suctionSoun
 					}
 				}
 				//黒が敵のジグザグ敵弾に当たったらゲームオーバー
-				if (player2.x + nizyuugo < zigzagEnemyBullet[i].x1 && zigzagEnemyBullet[i].x1 < player2.x + hyakunizyuugo && player2.y + nizyuugo < zigzagEnemyBullet[i].y1 && zigzagEnemyBullet[i].y1 < player2.y + hyakunanazyuugo
-				 || player2.x + nizyuugo < zigzagEnemyBullet[i].x1 && zigzagEnemyBullet[i].x1 < player2.x + hyakunizyuugo && player2.y + nizyuugo < zigzagEnemyBullet[i].y2 && zigzagEnemyBullet[i].y2 < player2.y + hyakunanazyuugo)
+				if (blackPlayer.x + nizyuugo < zigzagEnemyBullet[i].x1 && zigzagEnemyBullet[i].x1 < blackPlayer.x + hyakunizyuugo && blackPlayer.y + nizyuugo < zigzagEnemyBullet[i].y1 && zigzagEnemyBullet[i].y1 < blackPlayer.y + hyakunanazyuugo
+				 || blackPlayer.x + nizyuugo < zigzagEnemyBullet[i].x1 && zigzagEnemyBullet[i].x1 < blackPlayer.x + hyakunizyuugo && blackPlayer.y + nizyuugo < zigzagEnemyBullet[i].y2 && zigzagEnemyBullet[i].y2 < blackPlayer.y + hyakunanazyuugo)
 				{
 					//ダメージをカウントする
 					damage++;
@@ -217,7 +217,7 @@ void gameOver(Bullet zigzagEnemyBullet[],Player& player1,int bgm,int suctionSoun
 						//どくろエフェクトをだす
 						for (int i = 0; i < 15; i++)
 						{
-							DrawExtendGraph(player2.x, player2.y, player2.x + 200, player2.y + 200, skullEffect[i], TRUE);
+							DrawExtendGraph(blackPlayer.x, blackPlayer.y, blackPlayer.x + 200, blackPlayer.y + 200, skullEffect[i], TRUE);
 							WaitTimer(100);
 						}
 
@@ -234,8 +234,8 @@ void gameOver(Bullet zigzagEnemyBullet[],Player& player1,int bgm,int suctionSoun
 			if (shootingEnemyBullet[i].isInScreenFlag)
 			{
 				//白が敵のうちまくり敵弾に当たったらゲームオーバー
-				if (player1.x + nizyuugo < shootingEnemyBullet[i].x1 && shootingEnemyBullet[i].x1 < player1.x + hyakugozyuu && player1.y + nizyuugo < shootingEnemyBullet[i].y1 && shootingEnemyBullet[i].y1 < player1.y + hyakunanazyuugo
-				 || player1.x + nizyuugo < shootingEnemyBullet[i].x1 && shootingEnemyBullet[i].x1 < player1.x + hyakugozyuu && player1.y + nizyuugo < shootingEnemyBullet[i].y2 && shootingEnemyBullet[i].y2 < player1.y + hyakunanazyuugo)
+				if (whitePlayer.x + nizyuugo < shootingEnemyBullet[i].x1 && shootingEnemyBullet[i].x1 < whitePlayer.x + hyakugozyuu && whitePlayer.y + nizyuugo < shootingEnemyBullet[i].y1 && shootingEnemyBullet[i].y1 < whitePlayer.y + hyakunanazyuugo
+				 || whitePlayer.x + nizyuugo < shootingEnemyBullet[i].x1 && shootingEnemyBullet[i].x1 < whitePlayer.x + hyakugozyuu && whitePlayer.y + nizyuugo < shootingEnemyBullet[i].y2 && shootingEnemyBullet[i].y2 < whitePlayer.y + hyakunanazyuugo)
 				{
 					//ダメージをカウントする
 					damage++;
@@ -255,7 +255,7 @@ void gameOver(Bullet zigzagEnemyBullet[],Player& player1,int bgm,int suctionSoun
 						//どくろエフェクトをだす
 						for (int i = 0; i < 15; i++)
 						{
-							DrawExtendGraph(player1.x, player1.y, player1.x + 200, player1.y + 200, skullEffect[i], TRUE);
+							DrawExtendGraph(whitePlayer.x, whitePlayer.y, whitePlayer.x + 200, whitePlayer.y + 200, skullEffect[i], TRUE);
 							WaitTimer(100);
 						}
 
@@ -264,8 +264,8 @@ void gameOver(Bullet zigzagEnemyBullet[],Player& player1,int bgm,int suctionSoun
 					}
 				}
 				//黒が敵のうちまくり敵弾に当たったらゲームオーバー
-				if (player2.x + nizyuugo < shootingEnemyBullet[i].x1 && shootingEnemyBullet[i].x1 < player2.x + hyakunizyuugo && player2.y + nizyuugo < shootingEnemyBullet[i].y1 && shootingEnemyBullet[i].y1 < player2.y + hyakunanazyuugo
-				 || player2.x + nizyuugo < shootingEnemyBullet[i].x1 && shootingEnemyBullet[i].x1 < player2.x + hyakunizyuugo && player2.y + nizyuugo < shootingEnemyBullet[i].y2 && shootingEnemyBullet[i].y2 < player2.y + hyakunanazyuugo)
+				if (blackPlayer.x + nizyuugo < shootingEnemyBullet[i].x1 && shootingEnemyBullet[i].x1 < blackPlayer.x + hyakunizyuugo && blackPlayer.y + nizyuugo < shootingEnemyBullet[i].y1 && shootingEnemyBullet[i].y1 < blackPlayer.y + hyakunanazyuugo
+				 || blackPlayer.x + nizyuugo < shootingEnemyBullet[i].x1 && shootingEnemyBullet[i].x1 < blackPlayer.x + hyakunizyuugo && blackPlayer.y + nizyuugo < shootingEnemyBullet[i].y2 && shootingEnemyBullet[i].y2 < blackPlayer.y + hyakunanazyuugo)
 				{
 					//ダメージをカウントする
 					damage++;
@@ -285,7 +285,7 @@ void gameOver(Bullet zigzagEnemyBullet[],Player& player1,int bgm,int suctionSoun
 						//どくろエフェクトをだす
 						for (int i = 0; i < 15; i++)
 						{
-							DrawExtendGraph(player2.x, player2.y, player2.x + 200, player2.y + 200, skullEffect[i], TRUE);
+							DrawExtendGraph(blackPlayer.x, blackPlayer.y, blackPlayer.x + 200, blackPlayer.y + 200, skullEffect[i], TRUE);
 							WaitTimer(100);
 						}
 
@@ -302,10 +302,10 @@ void gameOver(Bullet zigzagEnemyBullet[],Player& player1,int bgm,int suctionSoun
 			if (zigzagEnemy[i].isInScreenFlag)
 			{
 				//白がジグザグ敵に当たったらゲームオーバー
-				if (player1.x + nizyuugo < zigzagEnemy[i].x1 && zigzagEnemy[i].x1 < player1.x + hyakunizyuugo && player1.y + nizyuugo < zigzagEnemy[i].y1 && zigzagEnemy[i].y1 < player1.y + hyakugozyuu
-					|| player1.x + nizyuugo < zigzagEnemy[i].x1 && zigzagEnemy[i].x1 < player1.x + hyakunizyuugo && player1.y + nizyuugo < zigzagEnemy[i].y2 && zigzagEnemy[i].y2 < player1.y + hyakugozyuu
-					|| player1.x + nizyuugo < zigzagEnemy[i].x2 && zigzagEnemy[i].x2 < player1.x + hyakunizyuugo && player1.y + nizyuugo < zigzagEnemy[i].y1 && zigzagEnemy[i].y1 < player1.y + hyakugozyuu
-					|| player1.x + nizyuugo < zigzagEnemy[i].x2 && zigzagEnemy[i].x2 < player1.x + hyakunizyuugo && player1.y + nizyuugo < zigzagEnemy[i].y2 && zigzagEnemy[i].y2 < player1.y + hyakugozyuu)
+				if (whitePlayer.x + nizyuugo < zigzagEnemy[i].x1 && zigzagEnemy[i].x1 < whitePlayer.x + hyakunizyuugo && whitePlayer.y + nizyuugo < zigzagEnemy[i].y1 && zigzagEnemy[i].y1 < whitePlayer.y + hyakugozyuu
+					|| whitePlayer.x + nizyuugo < zigzagEnemy[i].x1 && zigzagEnemy[i].x1 < whitePlayer.x + hyakunizyuugo && whitePlayer.y + nizyuugo < zigzagEnemy[i].y2 && zigzagEnemy[i].y2 < whitePlayer.y + hyakugozyuu
+					|| whitePlayer.x + nizyuugo < zigzagEnemy[i].x2 && zigzagEnemy[i].x2 < whitePlayer.x + hyakunizyuugo && whitePlayer.y + nizyuugo < zigzagEnemy[i].y1 && zigzagEnemy[i].y1 < whitePlayer.y + hyakugozyuu
+					|| whitePlayer.x + nizyuugo < zigzagEnemy[i].x2 && zigzagEnemy[i].x2 < whitePlayer.x + hyakunizyuugo && whitePlayer.y + nizyuugo < zigzagEnemy[i].y2 && zigzagEnemy[i].y2 < whitePlayer.y + hyakugozyuu)
 				{
 					//ダメージをカウントする
 					damage++;
@@ -325,7 +325,7 @@ void gameOver(Bullet zigzagEnemyBullet[],Player& player1,int bgm,int suctionSoun
 						//どくろエフェクトをだす
 						for (int i = 0; i < 15; i++)
 						{
-							DrawExtendGraph(player1.x, player1.y, player1.x + 200, player1.y + 200, skullEffect[i], TRUE);
+							DrawExtendGraph(whitePlayer.x, whitePlayer.y, whitePlayer.x + 200, whitePlayer.y + 200, skullEffect[i], TRUE);
 							WaitTimer(100);
 						}
 
@@ -335,10 +335,10 @@ void gameOver(Bullet zigzagEnemyBullet[],Player& player1,int bgm,int suctionSoun
 				}
 
 				//黒がジグザグ敵に当たったらゲームオーバー
-				if (player2.x + nizyuugo < zigzagEnemy[i].x1 && zigzagEnemy[i].x1 < player2.x + hyakunizyuugo && player2.y + nizyuugo < zigzagEnemy[i].y1 && zigzagEnemy[i].y1 < player2.y + hyakugozyuu
-					|| player2.x + nizyuugo < zigzagEnemy[i].x1 && zigzagEnemy[i].x1 < player2.x + hyakunizyuugo && player2.y + nizyuugo < zigzagEnemy[i].y2 && zigzagEnemy[i].y2 < player2.y + hyakugozyuu
-					|| player2.x + nizyuugo < zigzagEnemy[i].x2 && zigzagEnemy[i].x2 < player2.x + hyakunizyuugo && player2.y + nizyuugo < zigzagEnemy[i].y1 && zigzagEnemy[i].y1 < player2.y + hyakugozyuu
-					|| player2.x + nizyuugo < zigzagEnemy[i].x2 && zigzagEnemy[i].x2 < player2.x + hyakunizyuugo && player2.y + nizyuugo < zigzagEnemy[i].y2 && zigzagEnemy[i].y2 < player2.y + hyakugozyuu)
+				if (blackPlayer.x + nizyuugo < zigzagEnemy[i].x1 && zigzagEnemy[i].x1 < blackPlayer.x + hyakunizyuugo && blackPlayer.y + nizyuugo < zigzagEnemy[i].y1 && zigzagEnemy[i].y1 < blackPlayer.y + hyakugozyuu
+					|| blackPlayer.x + nizyuugo < zigzagEnemy[i].x1 && zigzagEnemy[i].x1 < blackPlayer.x + hyakunizyuugo && blackPlayer.y + nizyuugo < zigzagEnemy[i].y2 && zigzagEnemy[i].y2 < blackPlayer.y + hyakugozyuu
+					|| blackPlayer.x + nizyuugo < zigzagEnemy[i].x2 && zigzagEnemy[i].x2 < blackPlayer.x + hyakunizyuugo && blackPlayer.y + nizyuugo < zigzagEnemy[i].y1 && zigzagEnemy[i].y1 < blackPlayer.y + hyakugozyuu
+					|| blackPlayer.x + nizyuugo < zigzagEnemy[i].x2 && zigzagEnemy[i].x2 < blackPlayer.x + hyakunizyuugo && blackPlayer.y + nizyuugo < zigzagEnemy[i].y2 && zigzagEnemy[i].y2 < blackPlayer.y + hyakugozyuu)
 				{
 					//ダメージをカウントする
 					damage++;
@@ -358,7 +358,7 @@ void gameOver(Bullet zigzagEnemyBullet[],Player& player1,int bgm,int suctionSoun
 						//どくろエフェクトをだす
 						for (int i = 0; i < 15; i++)
 						{
-							DrawExtendGraph(player2.x, player2.y, player2.x + 200, player2.y + 200, skullEffect[i], TRUE);
+							DrawExtendGraph(blackPlayer.x, blackPlayer.y, blackPlayer.x + 200, blackPlayer.y + 200, skullEffect[i], TRUE);
 							WaitTimer(100);
 						}
 
@@ -375,10 +375,10 @@ void gameOver(Bullet zigzagEnemyBullet[],Player& player1,int bgm,int suctionSoun
 			if (straightEnemy[i].isInScreenFlag)
 			{
 				//白が真っ直ぐ敵に当たったらゲームオーバー
-				if (player1.x + nizyuugo < straightEnemy[i].x1 && straightEnemy[i].x1 < player1.x + hyakunizyuugo && player1.y + nizyuugo < straightEnemy[i].y1 && straightEnemy[i].y1 < player1.y + hyakugozyuu
-					|| player1.x + nizyuugo < straightEnemy[i].x1 && straightEnemy[i].x1 < player1.x + hyakunizyuugo && player1.y + nizyuugo < straightEnemy[i].y2 && straightEnemy[i].y2 < player1.y + hyakugozyuu
-					|| player1.x + nizyuugo < straightEnemy[i].x2 && straightEnemy[i].x2 < player1.x + hyakunizyuugo && player1.y + nizyuugo < straightEnemy[i].y1 && straightEnemy[i].y1 < player1.y + hyakugozyuu
-					|| player1.x + nizyuugo < straightEnemy[i].x2 && straightEnemy[i].x2 < player1.x + hyakunizyuugo && player1.y + nizyuugo < straightEnemy[i].y2 && straightEnemy[i].y2 < player1.y + hyakugozyuu)
+				if (whitePlayer.x + nizyuugo < straightEnemy[i].x1 && straightEnemy[i].x1 < whitePlayer.x + hyakunizyuugo && whitePlayer.y + nizyuugo < straightEnemy[i].y1 && straightEnemy[i].y1 < whitePlayer.y + hyakugozyuu
+					|| whitePlayer.x + nizyuugo < straightEnemy[i].x1 && straightEnemy[i].x1 < whitePlayer.x + hyakunizyuugo && whitePlayer.y + nizyuugo < straightEnemy[i].y2 && straightEnemy[i].y2 < whitePlayer.y + hyakugozyuu
+					|| whitePlayer.x + nizyuugo < straightEnemy[i].x2 && straightEnemy[i].x2 < whitePlayer.x + hyakunizyuugo && whitePlayer.y + nizyuugo < straightEnemy[i].y1 && straightEnemy[i].y1 < whitePlayer.y + hyakugozyuu
+					|| whitePlayer.x + nizyuugo < straightEnemy[i].x2 && straightEnemy[i].x2 < whitePlayer.x + hyakunizyuugo && whitePlayer.y + nizyuugo < straightEnemy[i].y2 && straightEnemy[i].y2 < whitePlayer.y + hyakugozyuu)
 				{
 					//ダメージをカウントする
 					damage++;
@@ -398,7 +398,7 @@ void gameOver(Bullet zigzagEnemyBullet[],Player& player1,int bgm,int suctionSoun
 						//どくろエフェクトをだす
 						for (int i = 0; i < 15; i++)
 						{
-							DrawExtendGraph(player1.x, player1.y, player1.x + 200, player1.y + 200, skullEffect[i], TRUE);
+							DrawExtendGraph(whitePlayer.x, whitePlayer.y, whitePlayer.x + 200, whitePlayer.y + 200, skullEffect[i], TRUE);
 							WaitTimer(100);
 						}
 
@@ -407,10 +407,10 @@ void gameOver(Bullet zigzagEnemyBullet[],Player& player1,int bgm,int suctionSoun
 					}
 				}
 				//黒が真っ直ぐ敵に当たったらゲームオーバー
-				if (player2.x + nizyuugo < straightEnemy[i].x1 && straightEnemy[i].x1 < player2.x + hyakunizyuugo && player2.y + nizyuugo < straightEnemy[i].y1 && straightEnemy[i].y1 < player2.y + hyakugozyuu
-					|| player2.x + nizyuugo < straightEnemy[i].x1 && straightEnemy[i].x1 < player2.x + hyakunizyuugo && player2.y + nizyuugo < straightEnemy[i].y2 && straightEnemy[i].y2 < player2.y + hyakugozyuu
-					|| player2.x + nizyuugo < straightEnemy[i].x2 && straightEnemy[i].x2 < player2.x + hyakunizyuugo && player2.y + nizyuugo < straightEnemy[i].y1 && straightEnemy[i].y1 < player2.y + hyakugozyuu
-					|| player2.x + nizyuugo < straightEnemy[i].x2 && straightEnemy[i].x2 < player2.x + hyakunizyuugo && player2.y + nizyuugo < straightEnemy[i].y2 && straightEnemy[i].y2 < player2.y + hyakugozyuu)
+				if (blackPlayer.x + nizyuugo < straightEnemy[i].x1 && straightEnemy[i].x1 < blackPlayer.x + hyakunizyuugo && blackPlayer.y + nizyuugo < straightEnemy[i].y1 && straightEnemy[i].y1 < blackPlayer.y + hyakugozyuu
+					|| blackPlayer.x + nizyuugo < straightEnemy[i].x1 && straightEnemy[i].x1 < blackPlayer.x + hyakunizyuugo && blackPlayer.y + nizyuugo < straightEnemy[i].y2 && straightEnemy[i].y2 < blackPlayer.y + hyakugozyuu
+					|| blackPlayer.x + nizyuugo < straightEnemy[i].x2 && straightEnemy[i].x2 < blackPlayer.x + hyakunizyuugo && blackPlayer.y + nizyuugo < straightEnemy[i].y1 && straightEnemy[i].y1 < blackPlayer.y + hyakugozyuu
+					|| blackPlayer.x + nizyuugo < straightEnemy[i].x2 && straightEnemy[i].x2 < blackPlayer.x + hyakunizyuugo && blackPlayer.y + nizyuugo < straightEnemy[i].y2 && straightEnemy[i].y2 < blackPlayer.y + hyakugozyuu)
 				{
 					//ダメージをカウントする
 					damage++;
@@ -430,7 +430,7 @@ void gameOver(Bullet zigzagEnemyBullet[],Player& player1,int bgm,int suctionSoun
 						//どくろエフェクトをだす
 						for (int i = 0; i < 15; i++)
 						{
-							DrawExtendGraph(player2.x, player2.y, player2.x + 200, player2.y + 200, skullEffect[i], TRUE);
+							DrawExtendGraph(blackPlayer.x, blackPlayer.y, blackPlayer.x + 200, blackPlayer.y + 200, skullEffect[i], TRUE);
 							WaitTimer(100);
 						}
 
@@ -446,10 +446,10 @@ void gameOver(Bullet zigzagEnemyBullet[],Player& player1,int bgm,int suctionSoun
 			if (shootingEnemy[i].isInScreenFlag)
 			{
 				//白が敵のうちまくる敵に当たったらゲームオーバー
-				if (player1.x + nizyuugo < shootingEnemy[i].x1 && shootingEnemy[i].x1 < player1.x + hyakunizyuugo && player1.y + nizyuugo < shootingEnemy[i].y1 && shootingEnemy[i].y1 < player1.y + hyakugozyuu
-					|| player1.x + nizyuugo < shootingEnemy[i].x1 && shootingEnemy[i].x1 < player1.x + hyakunizyuugo && player1.y + nizyuugo < shootingEnemy[i].y2 && shootingEnemy[i].y2 < player1.y + hyakugozyuu
-					|| player1.x + nizyuugo < shootingEnemy[i].x2 && shootingEnemy[i].x2 < player1.x + hyakunizyuugo && player1.y + nizyuugo < shootingEnemy[i].y1 && shootingEnemy[i].y1 < player1.y + hyakugozyuu
-					|| player1.x + nizyuugo < shootingEnemy[i].x2 && shootingEnemy[i].x2 < player1.x + hyakunizyuugo && player1.y + nizyuugo < shootingEnemy[i].y2 && shootingEnemy[i].y2 < player1.y + hyakugozyuu)
+				if (whitePlayer.x + nizyuugo < shootingEnemy[i].x1 && shootingEnemy[i].x1 < whitePlayer.x + hyakunizyuugo && whitePlayer.y + nizyuugo < shootingEnemy[i].y1 && shootingEnemy[i].y1 < whitePlayer.y + hyakugozyuu
+					|| whitePlayer.x + nizyuugo < shootingEnemy[i].x1 && shootingEnemy[i].x1 < whitePlayer.x + hyakunizyuugo && whitePlayer.y + nizyuugo < shootingEnemy[i].y2 && shootingEnemy[i].y2 < whitePlayer.y + hyakugozyuu
+					|| whitePlayer.x + nizyuugo < shootingEnemy[i].x2 && shootingEnemy[i].x2 < whitePlayer.x + hyakunizyuugo && whitePlayer.y + nizyuugo < shootingEnemy[i].y1 && shootingEnemy[i].y1 < whitePlayer.y + hyakugozyuu
+					|| whitePlayer.x + nizyuugo < shootingEnemy[i].x2 && shootingEnemy[i].x2 < whitePlayer.x + hyakunizyuugo && whitePlayer.y + nizyuugo < shootingEnemy[i].y2 && shootingEnemy[i].y2 < whitePlayer.y + hyakugozyuu)
 				{
 					//ダメージをカウントする
 					damage++;
@@ -469,7 +469,7 @@ void gameOver(Bullet zigzagEnemyBullet[],Player& player1,int bgm,int suctionSoun
 						//どくろエフェクトをだす
 						for (int i = 0; i < 15; i++)
 						{
-							DrawExtendGraph(player1.x, player1.y, player1.x + 200, player1.y + 200, skullEffect[i], TRUE);
+							DrawExtendGraph(whitePlayer.x, whitePlayer.y, whitePlayer.x + 200, whitePlayer.y + 200, skullEffect[i], TRUE);
 							WaitTimer(100);
 						}
 
@@ -478,10 +478,10 @@ void gameOver(Bullet zigzagEnemyBullet[],Player& player1,int bgm,int suctionSoun
 					}
 				}
 				//黒がうちまくる敵に当たったらゲームオーバー
-				if (player2.x + nizyuugo < shootingEnemy[i].x1 && shootingEnemy[i].x1 < player2.x + hyakunizyuugo && player2.y + nizyuugo < shootingEnemy[i].y1 && shootingEnemy[i].y1 < player2.y + hyakugozyuu
-					|| player2.x + nizyuugo < shootingEnemy[i].x1 && shootingEnemy[i].x1 < player2.x + hyakunizyuugo && player2.y + nizyuugo < shootingEnemy[i].y2 && shootingEnemy[i].y2 < player2.y + hyakugozyuu
-					|| player2.x + nizyuugo < shootingEnemy[i].x2 && shootingEnemy[i].x2 < player2.x + hyakunizyuugo && player2.y + nizyuugo < shootingEnemy[i].y1 && shootingEnemy[i].y1 < player2.y + hyakugozyuu
-					|| player2.x + nizyuugo < shootingEnemy[i].x2 && shootingEnemy[i].x2 < player2.x + hyakunizyuugo && player2.y + nizyuugo < shootingEnemy[i].y2 && shootingEnemy[i].y2 < player2.y + hyakugozyuu)
+				if (blackPlayer.x + nizyuugo < shootingEnemy[i].x1 && shootingEnemy[i].x1 < blackPlayer.x + hyakunizyuugo && blackPlayer.y + nizyuugo < shootingEnemy[i].y1 && shootingEnemy[i].y1 < blackPlayer.y + hyakugozyuu
+					|| blackPlayer.x + nizyuugo < shootingEnemy[i].x1 && shootingEnemy[i].x1 < blackPlayer.x + hyakunizyuugo && blackPlayer.y + nizyuugo < shootingEnemy[i].y2 && shootingEnemy[i].y2 < blackPlayer.y + hyakugozyuu
+					|| blackPlayer.x + nizyuugo < shootingEnemy[i].x2 && shootingEnemy[i].x2 < blackPlayer.x + hyakunizyuugo && blackPlayer.y + nizyuugo < shootingEnemy[i].y1 && shootingEnemy[i].y1 < blackPlayer.y + hyakugozyuu
+					|| blackPlayer.x + nizyuugo < shootingEnemy[i].x2 && shootingEnemy[i].x2 < blackPlayer.x + hyakunizyuugo && blackPlayer.y + nizyuugo < shootingEnemy[i].y2 && shootingEnemy[i].y2 < blackPlayer.y + hyakugozyuu)
 				{
 					//ダメージをカウントする
 					damage++;
@@ -502,7 +502,7 @@ void gameOver(Bullet zigzagEnemyBullet[],Player& player1,int bgm,int suctionSoun
 						//どくろエフェクトをだす
 						for (int i = 0; i < 15; i++)
 						{
-							DrawExtendGraph(player2.x, player2.y, player2.x + 200, player2.y + 200, skullEffect[i], TRUE);
+							DrawExtendGraph(blackPlayer.x, blackPlayer.y, blackPlayer.x + 200, blackPlayer.y + 200, skullEffect[i], TRUE);
 							WaitTimer(100);
 						}
 
@@ -518,7 +518,7 @@ void gameOver(Bullet zigzagEnemyBullet[],Player& player1,int bgm,int suctionSoun
 			if (backEnemy[i].isInScreenFlag)
 			{
 				//でかい敵との判定(しろ）
-				if (i == 12 && backEnemy[12].x1 < player1.x && player1.x < backEnemy[12].x2 - 100 && backEnemy[12].y1 < player1.y && player1.y < backEnemy[12].y2)
+				if (i == 12 && backEnemy[12].x1 < whitePlayer.x && whitePlayer.x < backEnemy[12].x2 - 100 && backEnemy[12].y1 < whitePlayer.y && whitePlayer.y < backEnemy[12].y2)
 				{
 					//ダメージをカウントする
 					damage++;
@@ -538,7 +538,7 @@ void gameOver(Bullet zigzagEnemyBullet[],Player& player1,int bgm,int suctionSoun
 						//どくろエフェクトをだす
 						for (int i = 0; i < 15; i++)
 						{
-							DrawExtendGraph(player1.x, player1.y, player1.x + 200, player1.y + 200, skullEffect[i], TRUE);
+							DrawExtendGraph(whitePlayer.x, whitePlayer.y, whitePlayer.x + 200, whitePlayer.y + 200, skullEffect[i], TRUE);
 							WaitTimer(100);
 						}
 
@@ -547,7 +547,7 @@ void gameOver(Bullet zigzagEnemyBullet[],Player& player1,int bgm,int suctionSoun
 					}
 				}
 				//でかい敵との当たり判定（黒)
-				else if (i == 12 && backEnemy[12].x1 < player2.x && player2.x < backEnemy[12].x2 - 100 && backEnemy[12].y1 < player2.y && player2.y < backEnemy[12].y2)
+				else if (i == 12 && backEnemy[12].x1 < blackPlayer.x && blackPlayer.x < backEnemy[12].x2 - 100 && backEnemy[12].y1 < blackPlayer.y && blackPlayer.y < backEnemy[12].y2)
 				{
 					//ダメージをカウントする
 					damage++;
@@ -567,7 +567,7 @@ void gameOver(Bullet zigzagEnemyBullet[],Player& player1,int bgm,int suctionSoun
 						//どくろエフェクトをだす
 						for (int i = 0; i < 15; i++)
 						{
-							DrawExtendGraph(player2.x, player2.y, player2.x + 200, player2.y + 200, skullEffect[i], TRUE);
+							DrawExtendGraph(blackPlayer.x, blackPlayer.y, blackPlayer.x + 200, blackPlayer.y + 200, skullEffect[i], TRUE);
 							WaitTimer(100);
 						}
 
@@ -578,10 +578,10 @@ void gameOver(Bullet zigzagEnemyBullet[],Player& player1,int bgm,int suctionSoun
 				else
 				{
 					//白が敵の後ろから敵に当たったらゲームオーバー
-					if (player1.x + nizyuugo < backEnemy[i].x1 && backEnemy[i].x1 < player1.x + hyakunizyuugo && player1.y + nizyuugo < backEnemy[i].y1 && backEnemy[i].y1 < player1.y + hyakugozyuu
-						|| player1.x + nizyuugo < backEnemy[i].x1 && backEnemy[i].x1 < player1.x + hyakunizyuugo && player1.y + nizyuugo < backEnemy[i].y2 && backEnemy[i].y2 < player1.y + hyakugozyuu
-						|| player1.x + nizyuugo < backEnemy[i].x2 && backEnemy[i].x2 < player1.x + hyakunizyuugo && player1.y + nizyuugo < backEnemy[i].y1 && backEnemy[i].y1 < player1.y + hyakugozyuu
-						|| player1.x + nizyuugo < backEnemy[i].x2 && backEnemy[i].x2 < player1.x + hyakunizyuugo && player1.y + nizyuugo < backEnemy[i].y2 && backEnemy[i].y2 < player1.y + hyakugozyuu)
+					if (whitePlayer.x + nizyuugo < backEnemy[i].x1 && backEnemy[i].x1 < whitePlayer.x + hyakunizyuugo && whitePlayer.y + nizyuugo < backEnemy[i].y1 && backEnemy[i].y1 < whitePlayer.y + hyakugozyuu
+						|| whitePlayer.x + nizyuugo < backEnemy[i].x1 && backEnemy[i].x1 < whitePlayer.x + hyakunizyuugo && whitePlayer.y + nizyuugo < backEnemy[i].y2 && backEnemy[i].y2 < whitePlayer.y + hyakugozyuu
+						|| whitePlayer.x + nizyuugo < backEnemy[i].x2 && backEnemy[i].x2 < whitePlayer.x + hyakunizyuugo && whitePlayer.y + nizyuugo < backEnemy[i].y1 && backEnemy[i].y1 < whitePlayer.y + hyakugozyuu
+						|| whitePlayer.x + nizyuugo < backEnemy[i].x2 && backEnemy[i].x2 < whitePlayer.x + hyakunizyuugo && whitePlayer.y + nizyuugo < backEnemy[i].y2 && backEnemy[i].y2 < whitePlayer.y + hyakugozyuu)
 					{
 						//ダメージをカウントする
 						damage++;
@@ -601,7 +601,7 @@ void gameOver(Bullet zigzagEnemyBullet[],Player& player1,int bgm,int suctionSoun
 							//どくろエフェクトをだす
 							for (int i = 0; i < 15; i++)
 							{
-								DrawExtendGraph(player1.x, player1.y, player1.x + 200, player1.y + 200, skullEffect[i], TRUE);
+								DrawExtendGraph(whitePlayer.x, whitePlayer.y, whitePlayer.x + 200, whitePlayer.y + 200, skullEffect[i], TRUE);
 								WaitTimer(100);
 							}
 
@@ -610,10 +610,10 @@ void gameOver(Bullet zigzagEnemyBullet[],Player& player1,int bgm,int suctionSoun
 						}
 					}
 					//黒が後ろから敵に当たったらゲームオーバー
-					if (player2.x + nizyuugo < backEnemy[i].x1 && backEnemy[i].x1 < player2.x + hyakunizyuugo && player2.y + nizyuugo < backEnemy[i].y1 && backEnemy[i].y1 < player2.y + hyakugozyuu
-						|| player2.x + nizyuugo < backEnemy[i].x1 && backEnemy[i].x1 < player2.x + hyakunizyuugo && player2.y + nizyuugo < backEnemy[i].y2 && backEnemy[i].y2 < player2.y + hyakugozyuu
-						|| player2.x + nizyuugo < backEnemy[i].x2 && backEnemy[i].x2 < player2.x + hyakunizyuugo && player2.y + nizyuugo < backEnemy[i].y1 && backEnemy[i].y1 < player2.y + hyakugozyuu
-						|| player2.x + nizyuugo < backEnemy[i].x2 && backEnemy[i].x2 < player2.x + hyakunizyuugo && player2.y + nizyuugo < backEnemy[i].y2 && backEnemy[i].y2 < player2.y + hyakugozyuu)
+					if (blackPlayer.x + nizyuugo < backEnemy[i].x1 && backEnemy[i].x1 < blackPlayer.x + hyakunizyuugo && blackPlayer.y + nizyuugo < backEnemy[i].y1 && backEnemy[i].y1 < blackPlayer.y + hyakugozyuu
+						|| blackPlayer.x + nizyuugo < backEnemy[i].x1 && backEnemy[i].x1 < blackPlayer.x + hyakunizyuugo && blackPlayer.y + nizyuugo < backEnemy[i].y2 && backEnemy[i].y2 < blackPlayer.y + hyakugozyuu
+						|| blackPlayer.x + nizyuugo < backEnemy[i].x2 && backEnemy[i].x2 < blackPlayer.x + hyakunizyuugo && blackPlayer.y + nizyuugo < backEnemy[i].y1 && backEnemy[i].y1 < blackPlayer.y + hyakugozyuu
+						|| blackPlayer.x + nizyuugo < backEnemy[i].x2 && backEnemy[i].x2 < blackPlayer.x + hyakunizyuugo && blackPlayer.y + nizyuugo < backEnemy[i].y2 && backEnemy[i].y2 < blackPlayer.y + hyakugozyuu)
 					{
 						//ダメージをカウントする
 						damage++;
@@ -634,7 +634,7 @@ void gameOver(Bullet zigzagEnemyBullet[],Player& player1,int bgm,int suctionSoun
 							//どくろエフェクトをだす
 							for (int i = 0; i < 15; i++)
 							{
-								DrawExtendGraph(player2.x, player2.y, player2.x + 200, player2.y + 200, skullEffect[i], TRUE);
+								DrawExtendGraph(blackPlayer.x, blackPlayer.y, blackPlayer.x + 200, blackPlayer.y + 200, skullEffect[i], TRUE);
 								WaitTimer(100);
 							}
 
@@ -651,10 +651,10 @@ void gameOver(Bullet zigzagEnemyBullet[],Player& player1,int bgm,int suctionSoun
 			if (raidEnemy[i].isInScreenFlag)
 			{
 				//白が奇襲敵に当たったらゲームオーバー
-				if (player1.x + nizyuugo < raidEnemy[i].x1 && raidEnemy[i].x1 < player1.x + hyakunizyuugo && player1.y + nizyuugo < raidEnemy[i].y1 && raidEnemy[i].y1 < player1.y + hyakugozyuu
-					|| player1.x + nizyuugo < raidEnemy[i].x1 && raidEnemy[i].x1 < player1.x + hyakunizyuugo && player1.y + nizyuugo < raidEnemy[i].y2 && raidEnemy[i].y2 < player1.y + hyakugozyuu
-					|| player1.x + nizyuugo < raidEnemy[i].x2 && raidEnemy[i].x2 < player1.x + hyakunizyuugo && player1.y + nizyuugo < raidEnemy[i].y1 && raidEnemy[i].y1 < player1.y + hyakugozyuu
-					|| player1.x + nizyuugo < raidEnemy[i].x2 && raidEnemy[i].x2 < player1.x + hyakunizyuugo && player1.y + nizyuugo < raidEnemy[i].y2 && raidEnemy[i].y2 < player1.y + hyakugozyuu)
+				if (whitePlayer.x + nizyuugo < raidEnemy[i].x1 && raidEnemy[i].x1 < whitePlayer.x + hyakunizyuugo && whitePlayer.y + nizyuugo < raidEnemy[i].y1 && raidEnemy[i].y1 < whitePlayer.y + hyakugozyuu
+					|| whitePlayer.x + nizyuugo < raidEnemy[i].x1 && raidEnemy[i].x1 < whitePlayer.x + hyakunizyuugo && whitePlayer.y + nizyuugo < raidEnemy[i].y2 && raidEnemy[i].y2 < whitePlayer.y + hyakugozyuu
+					|| whitePlayer.x + nizyuugo < raidEnemy[i].x2 && raidEnemy[i].x2 < whitePlayer.x + hyakunizyuugo && whitePlayer.y + nizyuugo < raidEnemy[i].y1 && raidEnemy[i].y1 < whitePlayer.y + hyakugozyuu
+					|| whitePlayer.x + nizyuugo < raidEnemy[i].x2 && raidEnemy[i].x2 < whitePlayer.x + hyakunizyuugo && whitePlayer.y + nizyuugo < raidEnemy[i].y2 && raidEnemy[i].y2 < whitePlayer.y + hyakugozyuu)
 				{
 					//ダメージをカウントする
 					damage++;
@@ -674,7 +674,7 @@ void gameOver(Bullet zigzagEnemyBullet[],Player& player1,int bgm,int suctionSoun
 						//どくろエフェクトをだす
 						for (int i = 0; i < 15; i++)
 						{
-							DrawExtendGraph(player1.x, player1.y, player1.x + 200, player1.y + 200, skullEffect[i], TRUE);
+							DrawExtendGraph(whitePlayer.x, whitePlayer.y, whitePlayer.x + 200, whitePlayer.y + 200, skullEffect[i], TRUE);
 							WaitTimer(100);
 						}
 
@@ -683,10 +683,10 @@ void gameOver(Bullet zigzagEnemyBullet[],Player& player1,int bgm,int suctionSoun
 					}
 				}
 				//黒が奇襲敵に当たったらゲームオーバー
-				if (player2.x + nizyuugo < raidEnemy[i].x1 && raidEnemy[i].x1 < player2.x + hyakunizyuugo && player2.y + nizyuugo < raidEnemy[i].y1 && raidEnemy[i].y1 < player2.y + hyakugozyuu
-					|| player2.x + nizyuugo < raidEnemy[i].x1 && raidEnemy[i].x1 < player2.x + hyakunizyuugo && player2.y + nizyuugo < raidEnemy[i].y2 && raidEnemy[i].y2 < player2.y + hyakugozyuu
-					|| player2.x + nizyuugo < raidEnemy[i].x2 && raidEnemy[i].x2 < player2.x + hyakunizyuugo && player2.y + nizyuugo < raidEnemy[i].y1 && raidEnemy[i].y1 < player2.y + hyakugozyuu
-					|| player2.x + nizyuugo < raidEnemy[i].x2 && raidEnemy[i].x2 < player2.x + hyakunizyuugo && player2.y + nizyuugo < raidEnemy[i].y2 && raidEnemy[i].y2 < player2.y + hyakugozyuu)
+				if (blackPlayer.x + nizyuugo < raidEnemy[i].x1 && raidEnemy[i].x1 < blackPlayer.x + hyakunizyuugo && blackPlayer.y + nizyuugo < raidEnemy[i].y1 && raidEnemy[i].y1 < blackPlayer.y + hyakugozyuu
+					|| blackPlayer.x + nizyuugo < raidEnemy[i].x1 && raidEnemy[i].x1 < blackPlayer.x + hyakunizyuugo && blackPlayer.y + nizyuugo < raidEnemy[i].y2 && raidEnemy[i].y2 < blackPlayer.y + hyakugozyuu
+					|| blackPlayer.x + nizyuugo < raidEnemy[i].x2 && raidEnemy[i].x2 < blackPlayer.x + hyakunizyuugo && blackPlayer.y + nizyuugo < raidEnemy[i].y1 && raidEnemy[i].y1 < blackPlayer.y + hyakugozyuu
+					|| blackPlayer.x + nizyuugo < raidEnemy[i].x2 && raidEnemy[i].x2 < blackPlayer.x + hyakunizyuugo && blackPlayer.y + nizyuugo < raidEnemy[i].y2 && raidEnemy[i].y2 < blackPlayer.y + hyakugozyuu)
 				{
 					//ダメージをカウントする
 					damage++;
@@ -706,7 +706,7 @@ void gameOver(Bullet zigzagEnemyBullet[],Player& player1,int bgm,int suctionSoun
 						//どくろエフェクトをだす
 						for (int i = 0; i < 15; i++)
 						{
-							DrawExtendGraph(player2.x, player2.y, player2.x + 200, player2.y + 200, skullEffect[i], TRUE);
+							DrawExtendGraph(blackPlayer.x, blackPlayer.y, blackPlayer.x + 200, blackPlayer.y + 200, skullEffect[i], TRUE);
 							WaitTimer(100);
 						}
 

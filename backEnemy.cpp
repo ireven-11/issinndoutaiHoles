@@ -64,7 +64,7 @@ void InitializeBackEnemy(Enemy backEnemy[])
 }
 
 //後ろから敵ルーチン
-void UpdateBackEnemy(Enemy backEnemy[],int wave1,int& scroll,Player& player2, int wave3, int wave4)
+void UpdateBackEnemy(Enemy backEnemy[],int wave1,int& scroll,Player& blackPlayer, int wave3, int wave4)
 {
 	for (int i = 0; i < backEnemyNumber; i++)
 	{
@@ -91,12 +91,12 @@ void UpdateBackEnemy(Enemy backEnemy[],int wave1,int& scroll,Player& player2, in
 				backEnemy[i].x2 -= enemy_speed * 2;
 
 				//プレイヤーと敵のyの距離によって移動を変える
-				if (backEnemy[i].y1 - player2.y < 0)
+				if (backEnemy[i].y1 - blackPlayer.y < 0)
 				{
 					backEnemy[i].y1 += enemy_speed;
 					backEnemy[i].y2 += enemy_speed;
 				}
-				else if (backEnemy[i].y1 - player2.y > 0)
+				else if (backEnemy[i].y1 - blackPlayer.y > 0)
 				{
 					backEnemy[i].y1 -= enemy_speed;
 					backEnemy[i].y2 -= enemy_speed;

@@ -15,8 +15,8 @@ const int sannbyaku = 300;
 
 //変数宣言
 int	   selectscene;     			                //シーン変化
-Player player1;										//プレイヤー1の構造体変数
-Player player2;										//プレイヤー２の構造体変数
+Player whitePlayer;										//プレイヤー1の構造体変数
+Player blackPlayer;										//プレイヤー２の構造体変数
 Enemy  TutorialEnemy;								//チュートリアル敵の構造体変数
 Bullet TutorialBullet;								//チュートリアル弾の構造体変数
 Bullet PlayerBullet[PlayerShotNumber];				//プレイヤーの弾の構造体変数配列（弾は画面に[]内の数字までしかでない）

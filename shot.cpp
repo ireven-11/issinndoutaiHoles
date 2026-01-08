@@ -53,7 +53,7 @@ void DrawTutorialBullet(Bullet& TutorialBullet)
 }
 
 //プレイヤー弾初期化
-void InitializePlayerBullet(Bullet PlayerBullet[],int PlayerShotNumber, Player& player1)
+void InitializePlayerBullet(Bullet PlayerBullet[],int PlayerShotNumber, Player& whitePlayer)
 {
     //1回だけ画像を読み込み
     int tama2Graph = LoadGraph("img/tama2.png");
@@ -68,11 +68,11 @@ void InitializePlayerBullet(Bullet PlayerBullet[],int PlayerShotNumber, Player& 
     }
 
     //ショットボタンが前フレームで押されたかどうかを保存する変数にfalse(押されていない状態)を代入
-    player1.PrevShotFlag = false;
+    whitePlayer.PrevShotFlag = false;
 }
 
 //プレイヤー弾ルーチン
-void UpdatePlayerBullet(Bullet PlayerBullet[], int PlayerShotNumber , Player& player1, DINPUT_JOYSTATE input, int shotSound,int& remainingBullet)
+void UpdatePlayerBullet(Bullet PlayerBullet[], int PlayerShotNumber , Player& whitePlayer, DINPUT_JOYSTATE input, int shotSound,int& remainingBullet)
 {
     //インプット
     if (GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_360
@@ -86,13 +86,13 @@ void UpdatePlayerBullet(Bullet PlayerBullet[], int PlayerShotNumber , Player& pl
     }
 
     //RBボタンを押したときに射撃する
-    if (input.Buttons[5] > 0 && remainingBullet > 0 /*&& GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL*/
-        || input.Buttons[7] > 0 && remainingBullet > 0 /*&& GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL*/
+    if (input.Buttons[5] > 0 && remainingBullet > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
+        || input.Buttons[7] > 0 && remainingBullet > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
         || inputX.RightTrigger > 0 && remainingBullet > 0
         || inputX.Buttons[XINPUT_BUTTON_RIGHT_SHOULDER] > 0 && remainingBullet > 0)
     {
         //前フレームでショットボタンを押したかのフラグがfalseだったら弾を発射
-        if (player1.PrevShotFlag == false)
+        if (whitePlayer.PrevShotFlag == false)
         {
             //画面上に出てない弾があるか、弾の数だけ繰り返して調べる
             for (int i = 0; i < PlayerShotNumber; i++)
@@ -104,8 +104,8 @@ void UpdatePlayerBullet(Bullet PlayerBullet[], int PlayerShotNumber , Player& pl
                     PlaySoundMem(shotSound, DX_PLAYTYPE_BACK, TRUE);
 
                     //発射
-                    PlayerBullet[i].x1 = player1.x + 100;
-                    PlayerBullet[i].y1 = player1.y + 95;
+                    PlayerBullet[i].x1 = whitePlayer.x + 100;
+                    PlayerBullet[i].y1 = whitePlayer.y + 95;
                     PlayerBullet[i].x2 = PlayerBullet[i].x1 + 25;
                     PlayerBullet[i].y2 = PlayerBullet[i].y1 + 15;
                     PlayerBullet[i].isInScreenFlag = true;
@@ -120,12 +120,12 @@ void UpdatePlayerBullet(Bullet PlayerBullet[], int PlayerShotNumber , Player& pl
         }
 
         //前フレームでショットボタンを押されていたかのフラグにtrueを代入
-        player1.PrevShotFlag = true;
+        whitePlayer.PrevShotFlag = true;
     }
     else
     {
         //ショットボタンが押されていなかった場合はfalseを代入
-        player1.PrevShotFlag = false;
+        whitePlayer.PrevShotFlag = false;
     }
 
     for (int i = 0; i < PlayerShotNumber; i++)
@@ -214,7 +214,7 @@ void AwakeShootingEnemyBullet(Bullet& shootingEnemyBullet)
 }
 
 //うちまくる敵弾初期化
-void InitializeShootingEnemyBullet(Bullet& shootingEnemyBullet, Enemy& shootingEnemy,Player& player1)
+void InitializeShootingEnemyBullet(Bullet& shootingEnemyBullet, Enemy& shootingEnemy,Player& whitePlayer)
 {
     //うちまくる敵が生きていたら
     if (shootingEnemy.isInScreenFlag)
@@ -229,8 +229,8 @@ void InitializeShootingEnemyBullet(Bullet& shootingEnemyBullet, Enemy& shootingE
         shootingEnemyBullet.y2 = shootingEnemyBullet.y1 + height;
 
         //座標参照弾の計算
-        shootingEnemyBullet.sbx = player1.x - shootingEnemyBullet.x1;
-        shootingEnemyBullet.sby = player1.y - shootingEnemyBullet.y1;
+        shootingEnemyBullet.sbx = whitePlayer.x - shootingEnemyBullet.x1;
+        shootingEnemyBullet.sby = whitePlayer.y - shootingEnemyBullet.y1;
 
         // 平方根を求めるのに標準関数の sqrt を使う、
         // これを使うには math.h をインクルードする必要がある

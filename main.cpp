@@ -39,8 +39,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	const int hyaku = 100;
 	const int sannbyaku = 300;
 
-	ChangeWindowMode(FALSE);				   //ウィンドウモードにする
-	SetWindowStyleMode(7);				   //最大化ボタンが存在するウインドウモードに変更
+	ChangeWindowMode(FALSE);					//ウィンドウモードにする
+	SetWindowStyleMode(7);						//最大化ボタンが存在するウインドウモードに変更
 
 	// 画面サイズをデスクトップのサイズと同じにする
 	GetDefaultState(&DesktopW, &DesktopH, NULL);
@@ -72,8 +72,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	//変数宣言
 	int	   selectscene;     			                //シーン変化
-	Player player1;										//プレイヤー1の構造体変数
-	Player player2;										//プレイヤー２の構造体変数
+	Player whitePlayer;										//プレイヤー1の構造体変数
+	Player blackPlayer;										//プレイヤー２の構造体変数
 	Enemy  TutorialEnemy;								//チュートリアル敵の構造体変数
 	Bullet TutorialBullet;								//チュートリアル弾の構造体変数
 	Bullet PlayerBullet[PlayerShotNumber];				//プレイヤーの弾の構造体変数配列（弾は画面に[]内の数字までしかでない）
@@ -217,20 +217,21 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		// ウインドウのクライアント領域を取得する
 		GetWindowSize(&WindowW, &WindowH);
 
+		//インプット
+		if (GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_360
+			|| GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_ONE)
+		{
+			GetJoypadXInputState(DX_INPUT_PAD1, &inputX);
+		}
+		else if (GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_SWITCH_PRO_CTRL)
+		{
+			GetJoypadDirectInputState(DX_INPUT_PAD1, &input);
+		}
+
 		//シーン切り替え
 		switch (selectscene)
 		{
 		case TITLE:
-			//インプット
-			if (GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_360
-				|| GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_ONE)
-			{
-				GetJoypadXInputState(DX_INPUT_PAD1, &inputX);
-			}
-			//else if (GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_SWITCH_PRO_CTRL)
-			{
-				GetJoypadDirectInputState(DX_INPUT_PAD1, &input);
-			}
 
 			//ロゴ画像を描画
 			DrawExtendGraph(0, 0, initialWIDTH, HEIGHT, rogo, TRUE);
@@ -247,15 +248,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			}
 
 			//Bボタンで説明画面へ
-			if (/*GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_SWITCH_PRO_CTRL &&*/ GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B
+			if (GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_SWITCH_PRO_CTRL && GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B
 				|| inputX.Buttons[XINPUT_BUTTON_A] > 0)
 			{
 				if (!PrevBbuttonFlag)
 				{
 					//初期化
-					InitializePlayer(player1, player2);
+					InitializePlayer(whitePlayer, blackPlayer);
 					InitializeTutorialEnemy(TutorialEnemy, TutorialBullet);
-					InitializePlayerBullet(PlayerBullet, PlayerShotNumber, player1);
+					InitializePlayerBullet(PlayerBullet, PlayerShotNumber, whitePlayer);
 					InitializeZigzagEnemy(zigzagEnemy);
 					for (int i = 0; i < zigzagEnemyShotNumber; i++)
 					{
@@ -307,7 +308,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 				DrawGraph(0, 0, DemoMovie, FALSE);
 
 				//Bボタンを押したらタイトルへ戻る
-				if (/*GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_SWITCH_PRO_CTRL &&*/ GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B
+				if (GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_SWITCH_PRO_CTRL && GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B
 					|| inputX.Buttons[XINPUT_BUTTON_A] > 0
 					|| startVideoCount > 3000)
 				{
@@ -320,33 +321,23 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			}
 
 			//Uiを描画
-			DrawUI(scroll, wave4, selectscene, FontSize50, score, scoreMagnificatoin, player1, remainingBulletGraph, remainingBullet, HPgraph, damage, tutorial1and2Flag, initialWIDTH, HEIGHT, tutorial4Flag, FontSize100, BrinkCounter, tutorial3Flag, startVideoCount, warningGraph, warningSound);
+			DrawUI(scroll, wave4, selectscene, FontSize50, score, scoreMagnificatoin, whitePlayer, remainingBulletGraph, remainingBullet, HPgraph, damage, tutorial1and2Flag, initialWIDTH, HEIGHT, tutorial4Flag, FontSize100, BrinkCounter, tutorial3Flag, startVideoCount, warningGraph, warningSound);
 			
 			break;
 
 		case EXPLANE:
-			//インプット
-			if (GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_360
-				|| GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_ONE)
-			{
-				GetJoypadXInputState(DX_INPUT_PAD1, &inputX);
-			}
-			//else if (GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_SWITCH_PRO_CTRL)
-			{
-				GetJoypadDirectInputState(DX_INPUT_PAD1, &input);
-			}
 
 			//背景描画
 			DrawExtendGraph(0, 0, initialWIDTH, HEIGHT, backGraph,TRUE);
 
 			//キャラの画像を描画
-			DrawPlayer(player1, player2, input,suctionEffect, suctionEffectCount, invincibleFlag, invincibleTimeCount, suctionSucceedEffectFlag, suctionSucceedEffectCount, suctionSucceedEffect, Lstick, Rstick);
+			DrawPlayer(whitePlayer, blackPlayer, input,suctionEffect, suctionEffectCount, invincibleFlag, invincibleTimeCount, suctionSucceedEffectFlag, suctionSucceedEffectCount, suctionSucceedEffect, Lstick, Rstick);
 
 			//チュートリアル敵を描画
 			DrawTutorialEnemy(TutorialEnemy);
 
 			//Uiを描画
-			DrawUI(scroll, wave4, selectscene, FontSize50, score, scoreMagnificatoin, player1, remainingBulletGraph, remainingBullet, HPgraph, damage, tutorial1and2Flag, initialWIDTH, HEIGHT, tutorial4Flag, FontSize100, BrinkCounter, tutorial3Flag, startVideoCount, warningGraph, warningSound);
+			DrawUI(scroll, wave4, selectscene, FontSize50, score, scoreMagnificatoin, whitePlayer, remainingBulletGraph, remainingBullet, HPgraph, damage, tutorial1and2Flag, initialWIDTH, HEIGHT, tutorial4Flag, FontSize100, BrinkCounter, tutorial3Flag, startVideoCount, warningGraph, warningSound);
 
 			//点滅カウンターの数値を増やす
 			BrinkCounter++;
@@ -357,10 +348,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			}
 			
 			//プレイヤールーチン
-			UpdatePlayer(player1, player2, input, zigzagEnemyBullet, scoreMagnificatoin, suctionSound, succeedSuctionSound, remainingBullet, shootingEnemyBullet, blockFlag, blockX1, blockX2, blockY1, blockY2, scroll, wave4, suctionSucceedEffectFlag);
+			UpdatePlayer(whitePlayer, blackPlayer, input, zigzagEnemyBullet, scoreMagnificatoin, suctionSound, succeedSuctionSound, remainingBullet, shootingEnemyBullet, blockFlag, blockX1, blockX2, blockY1, blockY2, scroll, wave4, suctionSucceedEffectFlag);
 
 			//プレイヤーキャラ両方が右側にいったらtutorial1and2フラグをfalseにして演出を加える
-			if (player1.x > initialWIDTH / 2 && player2.x > initialWIDTH / 2)
+			if (whitePlayer.x > initialWIDTH / 2 && blackPlayer.x > initialWIDTH / 2)
 			{
 				if (tutorial1and2Flag)
 				{
@@ -381,7 +372,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			UpdateTutorialEnemy(TutorialEnemy);
 
 			//プレイヤー弾ルーチン
-			UpdatePlayerBullet(PlayerBullet, PlayerShotNumber, player1, input, shotSound, remainingBullet);
+			UpdatePlayerBullet(PlayerBullet, PlayerShotNumber, whitePlayer, input, shotSound, remainingBullet);
 
 			//プレイヤーが弾をうった時にショットカウントを増やす
 			if (input.Buttons[5] > 0 && !tutorial1and2Flag
@@ -429,14 +420,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 					|| inputX.Buttons[XINPUT_BUTTON_LEFT_SHOULDER] > 0)
 				{
 					//たまを吸い込んだ時に演出を加える
-					if (player2.x + 125 < TutorialBullet.x1 &&	//xmin当たり判定
-						TutorialBullet.x1 < player2.x + 251 &&	//xmax当たり判定
-						player2.y < TutorialBullet.y2 &&		//ymin当たり判定
-						TutorialBullet.y2 < player2.y + 204		//ymax当たり判定
-						|| player2.x + 125 < TutorialBullet.x1 &&
-						TutorialBullet.x1 < player2.x + 251 &&
-						TutorialBullet.y1 < player2.y + 204 &&
-						player2.y < TutorialBullet.y1)
+					if (blackPlayer.x + 125 < TutorialBullet.x1 &&	//xmin当たり判定
+						TutorialBullet.x1 < blackPlayer.x + 251 &&	//xmax当たり判定
+						blackPlayer.y < TutorialBullet.y2 &&		//ymin当たり判定
+						TutorialBullet.y2 < blackPlayer.y + 204		//ymax当たり判定
+						|| blackPlayer.x + 125 < TutorialBullet.x1 &&
+						TutorialBullet.x1 < blackPlayer.x + 251 &&
+						TutorialBullet.y1 < blackPlayer.y + 204 &&
+						blackPlayer.y < TutorialBullet.y1)
 					{
 						//吸い込み成功効果音
 						PlaySoundMem(succeedSuctionSound, DX_PLAYTYPE_BACK, TRUE);
@@ -469,7 +460,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			}
 
 			//プレイヤー弾のフラグ管理（当たり判定)
-			hitPlayerBullet(PlayerBullet, PlayerShotNumber, player2, zigzagEnemy, score, straightEnemy, shootingEnemy, backEnemy, raidEnemy, blockHP, blockFlag, blockX1, blockX2, blockY1, blockY2, explosionSound);
+			hitPlayerBullet(PlayerBullet, PlayerShotNumber, blackPlayer, zigzagEnemy, score, straightEnemy, shootingEnemy, backEnemy, raidEnemy, blockHP, blockFlag, blockX1, blockX2, blockY1, blockY2, explosionSound);
 
 			//スタートボタンでプレイ画面へ
 			if (input.Buttons[11] > 0
@@ -497,10 +488,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 					WaitTimer(500);
 					remainingBullet = IniBulletNumber; //残弾数を戻す
 					//プレイヤーを初期座標に戻す
-					player1.x = sannbyaku;
-					player1.y = sannbyaku;
-					player2.x = hyaku;
-					player2.y = sannbyaku;
+					whitePlayer.x = sannbyaku;
+					whitePlayer.y = sannbyaku;
+					blackPlayer.x = hyaku;
+					blackPlayer.y = sannbyaku;
 					for ( int i = 0; i < PlayerShotNumber; i++)
 					{
 						PlayerBullet[i].isInScreenFlag = false;
@@ -511,17 +502,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 			break;
 		case PLAY:
-			//インプット
-			if (GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_360
-				|| GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_ONE)
-			{
-				GetJoypadXInputState(DX_INPUT_PAD1, &inputX);
-			}
-			//else if (GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_SWITCH_PRO_CTRL)
-			{
-				GetJoypadDirectInputState(DX_INPUT_PAD1, &input);
-			}
-
+			
 			//ポーズ画面終了効果音
 			if (finishPauseFlag)
 			{
@@ -554,7 +535,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			}
 
 			//クリア画面
-			clearScene(player1, initialWIDTH, player2, BrinkCounter, shotSound, HEIGHT, FontSize300, FontSize30, clearSoundFlag, score,  FontSize100, scoreMagnificatoin, damage, startVideoCount, selectscene, suctionSound, bgm, clearSound, FontSize50);
+			clearScene(whitePlayer, initialWIDTH, blackPlayer, BrinkCounter, shotSound, HEIGHT, FontSize300, FontSize30, clearSoundFlag, score,  FontSize100, scoreMagnificatoin, damage, startVideoCount, selectscene, suctionSound, bgm, clearSound, FontSize50);
 
 			//bgmフラグがtrueのときだけbgmをながす
 			if (bgmFlag)
@@ -577,13 +558,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			DrawBlock(blockGraph, blockHP, blockFlag, blockX1, blockX2, blockY1, blockY2, scroll);
 
 			//プレイヤールーチン
-			UpdatePlayer(player1, player2, input, zigzagEnemyBullet, scoreMagnificatoin, suctionSound, succeedSuctionSound, remainingBullet, shootingEnemyBullet, blockFlag, blockX1, blockX2, blockY1, blockY2, scroll, wave4, suctionSucceedEffectFlag);
+			UpdatePlayer(whitePlayer, blackPlayer, input, zigzagEnemyBullet, scoreMagnificatoin, suctionSound, succeedSuctionSound, remainingBullet, shootingEnemyBullet, blockFlag, blockX1, blockX2, blockY1, blockY2, scroll, wave4, suctionSucceedEffectFlag);
 
 			//プレイヤーの画像を描画
-			DrawPlayer(player1, player2, input, suctionEffect, suctionEffectCount, invincibleFlag, invincibleTimeCount, suctionSucceedEffectFlag, suctionSucceedEffectCount, suctionSucceedEffect, Lstick, Rstick);
+			DrawPlayer(whitePlayer, blackPlayer, input, suctionEffect, suctionEffectCount, invincibleFlag, invincibleTimeCount, suctionSucceedEffectFlag, suctionSucceedEffectCount, suctionSucceedEffect, Lstick, Rstick);
 			
 			//プレイヤー弾ルーチン
-			UpdatePlayerBullet(PlayerBullet, PlayerShotNumber, player1, input, shotSound, remainingBullet);
+			UpdatePlayerBullet(PlayerBullet, PlayerShotNumber, whitePlayer, input, shotSound, remainingBullet);
 
 			//スクロールが一定に達すると敵が出現
 			if (scroll > wave1)
@@ -611,7 +592,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			DrawShootingEnemy(shootingEnemy, explosionEffect);
 
 			//後ろから敵ルーチン
-			UpdateBackEnemy(backEnemy, wave1, scroll, player2, wave3, wave4);
+			UpdateBackEnemy(backEnemy, wave1, scroll, blackPlayer, wave3, wave4);
 
 			//後ろから敵描画
 			DrawBackEnemy(backEnemy, explosionEffect);
@@ -623,7 +604,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			DrawRaidEnemy(raidEnemy,explosionEffect);
 
 			//プレイヤー弾のフラグ管理（当たり判定)
-			hitPlayerBullet(PlayerBullet, PlayerShotNumber, player2, zigzagEnemy, score, straightEnemy, shootingEnemy,backEnemy, raidEnemy, blockHP, blockFlag, blockX1, blockX2, blockY1, blockY2, explosionSound);
+			hitPlayerBullet(PlayerBullet, PlayerShotNumber, blackPlayer, zigzagEnemy, score, straightEnemy, shootingEnemy,backEnemy, raidEnemy, blockHP, blockFlag, blockX1, blockX2, blockY1, blockY2, explosionSound);
 
 			//プレイヤー弾描画
 			DrawPlayerBullet(PlayerBullet, PlayerShotNumber);
@@ -659,7 +640,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			for (int i = 0; i < shootingEnemyNumber; i++)
 			{
 				//敵が画面内にいるか＆＆白プレイヤーが敵より左にいるか
-				if (shootingEnemy[i].x1 < initialWIDTH && player1.x - shootingEnemy[i].x1 < 0)
+				if (shootingEnemy[i].x1 < initialWIDTH && whitePlayer.x - shootingEnemy[i].x1 < 0)
 				{
 					//最初の4体
 					if (i <= 4)
@@ -674,7 +655,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 								if (!shootingEnemyBullet[j].isInScreenFlag)
 								{
 									//うちまくる敵弾発射
-									InitializeShootingEnemyBullet(shootingEnemyBullet[j], shootingEnemy[i], player1);
+									InitializeShootingEnemyBullet(shootingEnemyBullet[j], shootingEnemy[i], whitePlayer);
 									break;
 								}
 							}
@@ -691,7 +672,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 								if (!shootingEnemyBullet[j].isInScreenFlag)
 								{
 									//うちまくる敵弾発射
-									InitializeShootingEnemyBullet(shootingEnemyBullet[j], shootingEnemy[i], player1);
+									InitializeShootingEnemyBullet(shootingEnemyBullet[j], shootingEnemy[i], whitePlayer);
 									break;
 								}
 							}
@@ -718,10 +699,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			}
 
 			//Uiを描画
-			DrawUI(scroll, wave4, selectscene, FontSize50, score, scoreMagnificatoin, player1, remainingBulletGraph, remainingBullet, HPgraph, damage, tutorial1and2Flag, initialWIDTH, HEIGHT, tutorial4Flag, FontSize100, BrinkCounter, tutorial3Flag, startVideoCount, warningGraph, warningSound);
+			DrawUI(scroll, wave4, selectscene, FontSize50, score, scoreMagnificatoin, whitePlayer, remainingBulletGraph, remainingBullet, HPgraph, damage, tutorial1and2Flag, initialWIDTH, HEIGHT, tutorial4Flag, FontSize100, BrinkCounter, tutorial3Flag, startVideoCount, warningGraph, warningSound);
 
 			//Yボタンでポーズ画面へ移行(内部的にはX)
-			if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_X /*&& GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL*/
+			if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_X && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
 				|| inputX.Buttons[XINPUT_BUTTON_X] > 0)
 			{
 				// ゲーム画面をバッファに保存
@@ -737,7 +718,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 				//ブロックを描画
 				DrawBlock(blockGraph, blockHP, blockFlag, blockX1, blockX2, blockY1, blockY2, scroll);
 				//プレイヤーの画像を描画
-				DrawPlayer(player1, player2, input, suctionEffect, suctionEffectCount, invincibleFlag, invincibleTimeCount,suctionSucceedEffectFlag, suctionSucceedEffectCount, suctionSucceedEffect, Lstick, Rstick);
+				DrawPlayer(whitePlayer, blackPlayer, input, suctionEffect, suctionEffectCount, invincibleFlag, invincibleTimeCount,suctionSucceedEffectFlag, suctionSucceedEffectCount, suctionSucceedEffect, Lstick, Rstick);
 				//ジグザグ敵の描画
 				if (scroll > wave1)
 				{
@@ -766,7 +747,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 					//うちまくる敵弾描画
 					DrawShootingEnemyBullet(shootingEnemyBullet[i]);
 				}
-				DrawUI(scroll, wave4, selectscene, FontSize50, score, scoreMagnificatoin, player1, remainingBulletGraph, remainingBullet, HPgraph, damage, tutorial1and2Flag, initialWIDTH, HEIGHT, tutorial4Flag, FontSize100, BrinkCounter, tutorial3Flag, startVideoCount, warningGraph, warningSound);
+				DrawUI(scroll, wave4, selectscene, FontSize50, score, scoreMagnificatoin, whitePlayer, remainingBulletGraph, remainingBullet, HPgraph, damage, tutorial1and2Flag, initialWIDTH, HEIGHT, tutorial4Flag, FontSize100, BrinkCounter, tutorial3Flag, startVideoCount, warningGraph, warningSound);
 
 				SetDrawScreen(DX_SCREEN_FRONT); // 描画先を戻す
 
@@ -780,7 +761,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			//ゲームオーバーの判定
 			if (scroll < wave4)
 			{
-				gameOver(zigzagEnemyBullet, player1, bgm, suctionSound, succeedSuctionSound, backEnemy, player2, playerDeathSound, selectscene, shootingEnemy, shootingEnemyBullet, straightEnemy, zigzagEnemy, raidEnemy, skullEffect, damage, invincibleFlag);
+				gameOver(zigzagEnemyBullet, whitePlayer, bgm, suctionSound, succeedSuctionSound, backEnemy, blackPlayer, playerDeathSound, selectscene, shootingEnemy, shootingEnemyBullet, straightEnemy, zigzagEnemy, raidEnemy, skullEffect, damage, invincibleFlag);
 			}
 
 			break;

@@ -6,27 +6,27 @@
 static XINPUT_STATE inputX;
 
 //プレイヤー初期化
-void InitializePlayer(Player& player1,Player& player2)
+void InitializePlayer(Player& whitePlayer,Player& blackPlayer)
 {
 	//プレイヤーの画像読み込み
-	player1.normalgraph = LoadGraph("img/siro.png");
-	player2.normalgraph = LoadGraph("img/kuro.png");
-	player1.actiongraph = LoadGraph("img/siro_hakidasi.png");
-	player2.actiongraph = LoadGraph("img/kuro_suikomi.png");
+	whitePlayer.normalgraph = LoadGraph("img/siro.png");
+	blackPlayer.normalgraph = LoadGraph("img/kuro.png");
+	whitePlayer.actiongraph = LoadGraph("img/siro_hakidasi.png");
+	blackPlayer.actiongraph = LoadGraph("img/kuro_suikomi.png");
 
 	//プレイヤーの初期値
-	player1.x = 300;
-	player1.y = 300;
-	player2.x = 100;
-	player2.y = 300;
+	whitePlayer.x = 300;
+	whitePlayer.y = 300;
+	blackPlayer.x = 100;
+	blackPlayer.y = 300;
 
 	//存在フラグをtureにする
-	player1.isInScreenFlag = true;
-	player2.isInScreenFlag = true;
+	whitePlayer.isInScreenFlag = true;
+	blackPlayer.isInScreenFlag = true;
 }
 
 //プレイヤールーチン
-void UpdatePlayer(Player& player1, Player& player2, DINPUT_JOYSTATE input, Bullet zigzagEnemyBullet[], int& scoreMagnificatoin, int suctionSound, int succeedSuctionSound, int& remainingBullet, Bullet shootingEnemyBullet[], bool blockFlag[], int blockX1[], int blockX2[], int blockY1[], int blockY2[],int& scroll,int wave4, bool& suctionSucceedEffectFlag)
+void UpdatePlayer(Player& whitePlayer, Player& blackPlayer, DINPUT_JOYSTATE input, Bullet zigzagEnemyBullet[], int& scoreMagnificatoin, int suctionSound, int succeedSuctionSound, int& remainingBullet, Bullet shootingEnemyBullet[], bool blockFlag[], int blockX1[], int blockX2[], int blockY1[], int blockY2[],int& scroll,int wave4, bool& suctionSucceedEffectFlag)
 {
 	//インプット
 	if (GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_360
@@ -34,76 +34,75 @@ void UpdatePlayer(Player& player1, Player& player2, DINPUT_JOYSTATE input, Bulle
 	{
 		GetJoypadXInputState(DX_INPUT_PAD1, &inputX);
 	}
-	GetJoypadDirectInputState(DX_INPUT_PAD1, &input);
 
 	//クリアするまで
 	if (scroll <= wave4)
 	{
 		//キャラが画面外に出たときコントローラーのスティック入力を無効にする(多少バグ？あり。余裕があれば修正)
 	    //白プレイヤーの入力無効
-		/*if (player1.x < 0)
+		/*if (whitePlayer.x < 0)
 		{
 			input.Z = 0;
 		}
-		else if (player1.y < 0)
+		else if (whitePlayer.y < 0)
 		{
 			input.Rz = 0;
 		}
-		else if (player1.x + 176 > 1925)
+		else if (whitePlayer.x + 176 > 1925)
 		{
 			input.Z = 0;
 		}
-		else if (player1.y + 185 > 1000)
+		else if (whitePlayer.y + 185 > 1000)
 		{
 			input.Rz = 0;;
 		}*/
-		if (player1.x < 0)
+		if (whitePlayer.x < 0)
 		{
 			input.Rx = 0;
 		}
-		else if (player1.y < 0)
+		else if (whitePlayer.y < 0)
 		{
 			input.Ry = 0;
 		}
-		else if (player1.x + 176 > 1925)
+		else if (whitePlayer.x + 176 > 1925)
 		{
 			input.Rx = 0;
 		}
-		else if (player1.y + 185 > 1000)
+		else if (whitePlayer.y + 185 > 1000)
 		{
 			input.Ry = 0;;
 		}
 		//黒プレイヤーの入力無効
-		if (player2.x <= 0)
+		if (blackPlayer.x <= 0)
 		{
 			input.X = 0;
 		}
-		else if (player2.y <= 0)
+		else if (blackPlayer.y <= 0)
 		{
 			input.Y = 0;
 		}
-		else if (player2.x + 183 > 1925)
+		else if (blackPlayer.x + 183 > 1925)
 		{
 			input.X = 0;
 		}
-		else if (player2.y + 190 > 1000)
+		else if (blackPlayer.y + 190 > 1000)
 		{
 			input.Y = 0;
 		}
 
 		//でかいブロックが白プレイヤーにめり込んでいるとき
-		//if (blockX1[10] < player1.x + 176 && player1.x + 176 < blockX2[10] && blockFlag[10])
+		//if (blockX1[10] < whitePlayer.x + 176 && whitePlayer.x + 176 < blockX2[10] && blockFlag[10])
 		//{
 		//	//入力を無効にする
 		//	input.Z = 0;
 		//}
-		if (blockX1[10] < player1.x + 176 && player1.x + 176 < blockX2[10] && blockFlag[10])
+		if (blockX1[10] < whitePlayer.x + 176 && whitePlayer.x + 176 < blockX2[10] && blockFlag[10])
 		{
 			//入力を無効にする
 			input.Rx = 0;
 		}
 		//でかいブロックが黒プレイヤーにめり込んでいるとき
-		if (blockX1[10] < player2.x + 176 && player2.x + 176 < blockX2[10] && blockFlag[10])
+		if (blockX1[10] < blackPlayer.x + 176 && blackPlayer.x + 176 < blockX2[10] && blockFlag[10])
 		{
 			//入力を無効にする
 			input.X = 0;
@@ -112,88 +111,88 @@ void UpdatePlayer(Player& player1, Player& player2, DINPUT_JOYSTATE input, Bulle
 		// 右スティックを倒していたら白プレイヤーを移動させる
 		/*if (input.Rz < 0)
 		{
-			player1.y -= player1.speed;
+			whitePlayer.y -= whitePlayer.speed;
 		}
 		if (input.Rz > 0)
 		{
-			player1.y += player1.speed;
+			whitePlayer.y += whitePlayer.speed;
 		}
 		if (input.Z < 0)
 		{
-			player1.x -= player1.speed;
+			whitePlayer.x -= whitePlayer.speed;
 		}
 		if (input.Z > 0)
 		{
-			player1.x += player1.speed;
+			whitePlayer.x += whitePlayer.speed;
 		}*/
 		if (input.Ry < 0)
 		{
-			player1.y -= player1.speed;
+			whitePlayer.y -= whitePlayer.speed;
 		}
 		if (input.Ry > 0)
 		{
-			player1.y += player1.speed;
+			whitePlayer.y += whitePlayer.speed;
 		}
 		if (input.Rx < 0)
 		{
-			player1.x -= player1.speed;
+			whitePlayer.x -= whitePlayer.speed;
 		}
 		if (input.Rx > 0)
 		{
-			player1.x += player1.speed;
+			whitePlayer.x += whitePlayer.speed;
 		}
 
 		//左スティックを倒したら黒プレイヤーを移動させる
 		if (input.Y < 0)
 		{
-			player2.y -= player2.speed + 3;
+			blackPlayer.y -= blackPlayer.speed + 3;
 		}
 		if (input.Y > 0)
 		{
-			player2.y += player2.speed + 3;
+			blackPlayer.y += blackPlayer.speed + 3;
 		}
 		if (input.X < 0)
 		{
-			player2.x -= player2.speed + 3;
+			blackPlayer.x -= blackPlayer.speed + 3;
 		}
 		if (input.X > 0)
 		{
-			player2.x += player2.speed + 3;
+			blackPlayer.x += blackPlayer.speed + 3;
 		}
 
 		//白プレイヤー押し戻し処理
-		if (player1.x < 0)
+		if (whitePlayer.x < 0)
 		{
-			player1.x += player1.speed;
+			whitePlayer.x += whitePlayer.speed;
 		}
-		else if (player1.y < 0)
+		else if (whitePlayer.y < 0)
 		{
-			player1.y += player1.speed;
+			whitePlayer.y += whitePlayer.speed;
 		}
-		else if (player1.x + 176 > 1925)
+		else if (whitePlayer.x + 176 > 1925)
 		{
-			player1.x -= player1.speed;
+			whitePlayer.x -= whitePlayer.speed;
 		}
-		else if (player1.y + 185 > 1000)
+		else if (whitePlayer.y + 185 > 1000)
 		{
-			player1.y -= player1.speed;
+			whitePlayer.y -= whitePlayer.speed;
 		}
 		//黒プレイヤー押し戻し処理
-		if (player2.x <= 0)
+		if (blackPlayer.x <= 0)
 		{
-			player2.x += player2.speed + 3;
+			blackPlayer.x += blackPlayer.speed + 3;
 		}
-		else if (player2.y <= 0)
+		else if (blackPlayer.y <= 0)
 		{
-			player2.y += player2.speed + 3;
+			blackPlayer.y += blackPlayer.speed + 3;
 		}
-		else if (player2.x + 183 > 1925)
+		else if (blackPlayer.x + 183 > 1925)
 		{
-			player2.x -= player2.speed + 3;
+			blackPlayer.x -= blackPlayer.speed + 3;
 		}
-		else if (player2.y + 190 > 1000)
+		else if (blackPlayer.y + 190 > 1000)
 		{
-			player2.y -= player2.speed + 3;
+			blackPlayer.y -= blackPlayer.speed + 3;
 		}
 
 		//ブロックとの押し戻り処理
@@ -205,44 +204,44 @@ void UpdatePlayer(Player& player1, Player& player2, DINPUT_JOYSTATE input, Bulle
 				if (i < 10)
 				{
 					//ブロックが白プレイヤーにめり込んでいるとき
-					if (player1.x < blockX1[i] && blockX1[i] < player1.x + 176 &&
-						player1.y < blockY1[i] && blockY1[i] < player1.y + 185 ||
-						player1.x < blockX1[i] && blockX1[i] < player1.x + 176 &&
-						player1.y < blockY2[i] && blockY2[i] < player1.y + 185)
+					if (whitePlayer.x < blockX1[i] && blockX1[i] < whitePlayer.x + 176 &&
+						whitePlayer.y < blockY1[i] && blockY1[i] < whitePlayer.y + 185 ||
+						whitePlayer.x < blockX1[i] && blockX1[i] < whitePlayer.x + 176 &&
+						whitePlayer.y < blockY2[i] && blockY2[i] < whitePlayer.y + 185)
 					{
-						player1.x -= player1.speed;
+						whitePlayer.x -= whitePlayer.speed;
 
 						//入力を無効にする
 						input.Z = 0;
 					}
-					else if (player1.x < blockX2[i] && blockX2[i] < player1.x + 176 &&
-						player1.y < blockY1[i] && blockY1[i] < player1.y + 185 ||
-						player1.x < blockX2[i] && blockX2[i] < player1.x + 176 &&
-						player1.y < blockY2[i] && blockY2[i] < player1.y + 185)
+					else if (whitePlayer.x < blockX2[i] && blockX2[i] < whitePlayer.x + 176 &&
+						whitePlayer.y < blockY1[i] && blockY1[i] < whitePlayer.y + 185 ||
+						whitePlayer.x < blockX2[i] && blockX2[i] < whitePlayer.x + 176 &&
+						whitePlayer.y < blockY2[i] && blockY2[i] < whitePlayer.y + 185)
 					{
-						player1.x += player1.speed;
+						whitePlayer.x += whitePlayer.speed;
 
 						//入力を無効にする
 						input.Z = 0;
 					}
 
 					//ブロックが黒プレイヤーにめり込んでいるとき
-					if (player2.x < blockX1[i] && blockX1[i] < player2.x + 176 &&
-						player2.y < blockY1[i] && blockY1[i] < player2.y + 185 ||
-						player2.x < blockX1[i] && blockX1[i] < player2.x + 176 &&
-						player2.y < blockY2[i] && blockY2[i] < player2.y + 185)
+					if (blackPlayer.x < blockX1[i] && blockX1[i] < blackPlayer.x + 176 &&
+						blackPlayer.y < blockY1[i] && blockY1[i] < blackPlayer.y + 185 ||
+						blackPlayer.x < blockX1[i] && blockX1[i] < blackPlayer.x + 176 &&
+						blackPlayer.y < blockY2[i] && blockY2[i] < blackPlayer.y + 185)
 					{
-						player2.x -= player2.speed;
+						blackPlayer.x -= blackPlayer.speed;
 
 						//入力を無効にする
 						input.X = 0;
 					}
-					else if (player2.x < blockX2[i] && blockX2[i] < player2.x + 176 &&
-						player2.y < blockY1[i] && blockY1[i] < player2.y + 185 ||
-						player2.x < blockX2[i] && blockX2[i] < player2.x + 176 &&
-						player2.y < blockY2[i] && blockY2[i] < player2.y + 185)
+					else if (blackPlayer.x < blockX2[i] && blockX2[i] < blackPlayer.x + 176 &&
+						blackPlayer.y < blockY1[i] && blockY1[i] < blackPlayer.y + 185 ||
+						blackPlayer.x < blockX2[i] && blockX2[i] < blackPlayer.x + 176 &&
+						blackPlayer.y < blockY2[i] && blockY2[i] < blackPlayer.y + 185)
 					{
-						player2.x += player2.speed;
+						blackPlayer.x += blackPlayer.speed;
 
 						//入力を無効にする
 						input.X = 0;
@@ -251,17 +250,17 @@ void UpdatePlayer(Player& player1, Player& player2, DINPUT_JOYSTATE input, Bulle
 				else
 				{
 					//ブロックが白プレイヤーにめり込んでいるとき
-					if (blockX1[i] < player1.x + 176 && player1.x + 176 < blockX2[i])
+					if (blockX1[i] < whitePlayer.x + 176 && whitePlayer.x + 176 < blockX2[i])
 					{
-						player1.x -= player1.speed;
+						whitePlayer.x -= whitePlayer.speed;
 
 						//入力を無効にする
 						input.Z = 0;
 					}
 					//ブロックが黒プレイヤーにめり込んでいるとき
-					if (blockX1[i] < player2.x + 176 && player2.x + 176 < blockX2[i])
+					if (blockX1[i] < blackPlayer.x + 176 && blackPlayer.x + 176 < blockX2[i])
 					{
-						player2.x -= player2.speed;
+						blackPlayer.x -= blackPlayer.speed;
 
 						//入力を無効にする
 						input.X = 0;
@@ -271,8 +270,8 @@ void UpdatePlayer(Player& player1, Player& player2, DINPUT_JOYSTATE input, Bulle
 		}
 
 		//LBボタンを押してる間だけ弾を吸う
-		if (input.Buttons[4] > 0 /*&& GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL*/
-			|| input.Buttons[6] > 0 /*&& GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL*/
+		if (input.Buttons[4] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
+			|| input.Buttons[6] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
 			|| inputX.LeftTrigger > 0
 			|| inputX.Buttons[XINPUT_BUTTON_LEFT_SHOULDER] > 0)
 		{
@@ -284,14 +283,14 @@ void UpdatePlayer(Player& player1, Player& player2, DINPUT_JOYSTATE input, Bulle
 			{
 				if (zigzagEnemyBullet[i].isInScreenFlag)
 				{
-					if (player2.x + 125 < zigzagEnemyBullet[i].x1 &&
-						zigzagEnemyBullet[i].x1 < player2.x + 251 &&
-						player2.y < zigzagEnemyBullet[i].y2 &&
-						zigzagEnemyBullet[i].y2 < player2.y + 204 ||
-						player2.x + 125 < zigzagEnemyBullet[i].x1 &&
-						zigzagEnemyBullet[i].x1 < player2.x + 251 &&
-						zigzagEnemyBullet[i].y1 < player2.y + 204 &&
-						player2.y < zigzagEnemyBullet[i].y1)
+					if (blackPlayer.x + 125 < zigzagEnemyBullet[i].x1 &&
+						zigzagEnemyBullet[i].x1 < blackPlayer.x + 251 &&
+						blackPlayer.y < zigzagEnemyBullet[i].y2 &&
+						zigzagEnemyBullet[i].y2 < blackPlayer.y + 204 ||
+						blackPlayer.x + 125 < zigzagEnemyBullet[i].x1 &&
+						zigzagEnemyBullet[i].x1 < blackPlayer.x + 251 &&
+						zigzagEnemyBullet[i].y1 < blackPlayer.y + 204 &&
+						blackPlayer.y < zigzagEnemyBullet[i].y1)
 					{
 						//吸い込み成功効果音
 						PlaySoundMem(succeedSuctionSound, DX_PLAYTYPE_BACK, TRUE);
@@ -322,14 +321,14 @@ void UpdatePlayer(Player& player1, Player& player2, DINPUT_JOYSTATE input, Bulle
 			{
 				if (shootingEnemyBullet[i].isInScreenFlag)
 				{
-					if (player2.x + player2Widht <= shootingEnemyBullet[i].x1 &&
-						shootingEnemyBullet[i].x1 <= player2.x + suctionWidht &&
-						player2.y <= shootingEnemyBullet[i].y2 &&
-						shootingEnemyBullet[i].y2 <= player2.y + suctionHeight ||
-						player2.x + player2Widht <= shootingEnemyBullet[i].x1 &&
-						shootingEnemyBullet[i].x1 <= player2.x + suctionWidht &&
-						shootingEnemyBullet[i].y1 <= player2.y + suctionHeight &&
-						player2.y <= shootingEnemyBullet[i].y1)
+					if (blackPlayer.x + blackPlayerWidht <= shootingEnemyBullet[i].x1 &&
+						shootingEnemyBullet[i].x1 <= blackPlayer.x + suctionWidht &&
+						blackPlayer.y <= shootingEnemyBullet[i].y2 &&
+						shootingEnemyBullet[i].y2 <= blackPlayer.y + suctionHeight ||
+						blackPlayer.x + blackPlayerWidht <= shootingEnemyBullet[i].x1 &&
+						shootingEnemyBullet[i].x1 <= blackPlayer.x + suctionWidht &&
+						shootingEnemyBullet[i].y1 <= blackPlayer.y + suctionHeight &&
+						blackPlayer.y <= shootingEnemyBullet[i].y1)
 					{
 						//吸い込み成功効果音
 						PlaySoundMem(succeedSuctionSound, DX_PLAYTYPE_BACK, TRUE);
@@ -364,14 +363,14 @@ void UpdatePlayer(Player& player1, Player& player2, DINPUT_JOYSTATE input, Bulle
 	//クリアしたあと
 	else
 	{
-		player1.x += 10;
-		player2.x += 10;
+		whitePlayer.x += 10;
+		blackPlayer.x += 10;
 	}
 	
 }
 
 //プレイヤー描画
-void DrawPlayer(Player& player1, Player& player2, DINPUT_JOYSTATE input,int suctionEffect[],int& suctionEffectCount,bool& invincibleFlag,int& invincibleTimeCount, bool& suctionSucceedEffectFlag, int& suctionSucceedEffectCount, int suctionSucceedEffect[], int Lstick,int Rstick)
+void DrawPlayer(Player& whitePlayer, Player& blackPlayer, DINPUT_JOYSTATE input,int suctionEffect[],int& suctionEffectCount,bool& invincibleFlag,int& invincibleTimeCount, bool& suctionSucceedEffectFlag, int& suctionSucceedEffectCount, int suctionSucceedEffect[], int Lstick,int Rstick)
 {
 	//インプット
 	if (GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_360
@@ -379,17 +378,16 @@ void DrawPlayer(Player& player1, Player& player2, DINPUT_JOYSTATE input,int suct
 	{
 		GetJoypadXInputState(DX_INPUT_PAD1, &inputX);
 	}
-	else
-	{
-		GetJoypadDirectInputState(DX_INPUT_PAD1, &input);
-	}
 
-	if (player1.isInScreenFlag && player2.isInScreenFlag)
+	int test = GetJoypadType(PAD_INPUT_1);
+
+	if (whitePlayer.isInScreenFlag && blackPlayer.isInScreenFlag)
 	{
-		if (input.Buttons[4] > 0 && input.Buttons[5] > 0 /*&& GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL*/
-			|| input.Buttons[6] > 0 && input.Buttons[7] > 0 /*&& GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL*/
-			|| input.Buttons[4] > 0 && input.Buttons[7] > 0 /*&& GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL*/
-			|| input.Buttons[6] > 0 && input.Buttons[5] > 0 /*&& GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL*/
+		//両キャラのアクション状態の描画
+		if (input.Buttons[4] > 0 && input.Buttons[5] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
+			|| input.Buttons[6] > 0 && input.Buttons[7] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
+			|| input.Buttons[4] > 0 && input.Buttons[7] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
+			|| input.Buttons[6] > 0 && input.Buttons[5] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
 			|| inputX.RightTrigger > 0 && inputX.LeftTrigger > 0
 			|| inputX.Buttons[XINPUT_BUTTON_RIGHT_SHOULDER] > 0 && inputX.Buttons[XINPUT_BUTTON_LEFT_SHOULDER] > 0
 			|| inputX.RightTrigger > 0 && inputX.Buttons[XINPUT_BUTTON_LEFT_SHOULDER] > 0
@@ -402,10 +400,10 @@ void DrawPlayer(Player& player1, Player& player2, DINPUT_JOYSTATE input,int suct
 			}
 			else //通常描画
 			{
-				DrawExtendGraph(player1.x - 75, player1.y - 25, player1.x + 50, player1.y + 50, Rstick, TRUE);
-				DrawGraph(player1.x, player1.y, player1.actiongraph, TRUE);
-				DrawExtendGraph(player2.x - 75, player2.y - 25, player2.x + 50, player2.y + 50, Lstick, TRUE);
-				DrawGraph(player2.x, player2.y, player2.normalgraph, TRUE);
+				DrawExtendGraph(whitePlayer.x - 75, whitePlayer.y - 25, whitePlayer.x + 50, whitePlayer.y + 50, Rstick, TRUE);
+				DrawGraph(whitePlayer.x, whitePlayer.y, whitePlayer.actiongraph, TRUE);
+				DrawExtendGraph(blackPlayer.x - 75, blackPlayer.y - 25, blackPlayer.x + 50, blackPlayer.y + 50, Lstick, TRUE);
+				DrawGraph(blackPlayer.x, blackPlayer.y, blackPlayer.normalgraph, TRUE);
 			}
 
 			//吸い込みカウントが0になったら7に戻す
@@ -415,12 +413,12 @@ void DrawPlayer(Player& player1, Player& player2, DINPUT_JOYSTATE input,int suct
 			}
 
 			//吸い込みエフェクトを描画
-			DrawExtendGraph(player2.x + 300, player2.y - 50, player2.x + 50, player2.y + 275, suctionEffect[suctionEffectCount], TRUE);
+			DrawExtendGraph(blackPlayer.x + 300, blackPlayer.y - 50, blackPlayer.x + 50, blackPlayer.y + 275, suctionEffect[suctionEffectCount], TRUE);
 			suctionEffectCount--;
 
 		}
-		else if (input.Buttons[5] > 0 /*&& GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL*/
-			|| input.Buttons[7] > 0 /*&& GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL*/
+		else if (input.Buttons[5] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
+			|| input.Buttons[7] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
 			|| inputX.RightTrigger > 0
 			|| inputX.Buttons[XINPUT_BUTTON_RIGHT_SHOULDER] > 0)
 		{
@@ -431,14 +429,14 @@ void DrawPlayer(Player& player1, Player& player2, DINPUT_JOYSTATE input,int suct
 			}
 			else //通常描画
 			{
-				DrawExtendGraph(player1.x - 75, player1.y - 25, player1.x + 50, player1.y + 50, Rstick, TRUE);
-				DrawGraph(player1.x, player1.y, player1.actiongraph, TRUE);
-				DrawExtendGraph(player2.x - 75, player2.y - 25, player2.x + 50, player2.y + 50, Lstick, TRUE);
-				DrawGraph(player2.x, player2.y, player2.normalgraph, TRUE);
+				DrawExtendGraph(whitePlayer.x - 75, whitePlayer.y - 25, whitePlayer.x + 50, whitePlayer.y + 50, Rstick, TRUE);
+				DrawGraph(whitePlayer.x, whitePlayer.y, whitePlayer.actiongraph, TRUE);
+				DrawExtendGraph(blackPlayer.x - 75, blackPlayer.y - 25, blackPlayer.x + 50, blackPlayer.y + 50, Lstick, TRUE);
+				DrawGraph(blackPlayer.x, blackPlayer.y, blackPlayer.normalgraph, TRUE);
 			}
 		}
-		else if (input.Buttons[4] > 0 /*&& GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL*/
-			|| input.Buttons[6] > 0 /*&& GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL*/
+		else if (input.Buttons[4] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
+			|| input.Buttons[6] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
 			|| inputX.LeftTrigger > 0
 			|| inputX.Buttons[XINPUT_BUTTON_LEFT_SHOULDER] > 0)
 		{
@@ -449,10 +447,10 @@ void DrawPlayer(Player& player1, Player& player2, DINPUT_JOYSTATE input,int suct
 			}
 			else //通常描画
 			{
-				DrawExtendGraph(player1.x - 75, player1.y - 25, player1.x + 50, player1.y + 50, Rstick, TRUE);
-				DrawGraph(player1.x, player1.y, player1.normalgraph, TRUE);
-				DrawExtendGraph(player2.x - 75, player2.y - 25, player2.x + 50, player2.y + 50, Lstick, TRUE);
-				DrawGraph(player2.x, player2.y, player2.normalgraph, TRUE);
+				DrawExtendGraph(whitePlayer.x - 75, whitePlayer.y - 25, whitePlayer.x + 50, whitePlayer.y + 50, Rstick, TRUE);
+				DrawGraph(whitePlayer.x, whitePlayer.y, whitePlayer.normalgraph, TRUE);
+				DrawExtendGraph(blackPlayer.x - 75, blackPlayer.y - 25, blackPlayer.x + 50, blackPlayer.y + 50, Lstick, TRUE);
+				DrawGraph(blackPlayer.x, blackPlayer.y, blackPlayer.normalgraph, TRUE);
 			}
 
 			//吸い込みカウントが0になったら8に戻す
@@ -462,7 +460,7 @@ void DrawPlayer(Player& player1, Player& player2, DINPUT_JOYSTATE input,int suct
 			}
 
 			//吸い込みエフェクトを描画
-			DrawExtendGraph(player2.x + 300, player2.y - 50, player2.x + 50, player2.y + 275, suctionEffect[suctionEffectCount], TRUE);
+			DrawExtendGraph(blackPlayer.x + 300, blackPlayer.y - 50, blackPlayer.x + 50, blackPlayer.y + 275, suctionEffect[suctionEffectCount], TRUE);
 			suctionEffectCount--;
 		}
 		else
@@ -474,10 +472,10 @@ void DrawPlayer(Player& player1, Player& player2, DINPUT_JOYSTATE input,int suct
 			}
 			else //通常描画
 			{
-				DrawExtendGraph(player1.x - 75, player1.y - 25, player1.x + 50, player1.y + 50, Rstick, TRUE);
-				DrawGraph(player1.x, player1.y, player1.normalgraph, TRUE);
-				DrawExtendGraph(player2.x - 75, player2.y - 25, player2.x + 50, player2.y + 50, Lstick, TRUE);
-				DrawGraph(player2.x, player2.y, player2.normalgraph, TRUE);
+				DrawExtendGraph(whitePlayer.x - 75, whitePlayer.y - 25, whitePlayer.x + 50, whitePlayer.y + 50, Rstick, TRUE);
+				DrawGraph(whitePlayer.x, whitePlayer.y, whitePlayer.normalgraph, TRUE);
+				DrawExtendGraph(blackPlayer.x - 75, blackPlayer.y - 25, blackPlayer.x + 50, blackPlayer.y + 50, Lstick, TRUE);
+				DrawGraph(blackPlayer.x, blackPlayer.y, blackPlayer.normalgraph, TRUE);
 			}
 		}
 	}
@@ -485,13 +483,13 @@ void DrawPlayer(Player& player1, Player& player2, DINPUT_JOYSTATE input,int suct
 	//吸い込み成功エフェクトを描画
 	if (suctionSucceedEffectFlag)
 	{
-		if (player1.y < 40)
+		if (whitePlayer.y < 40)
 		{
-			DrawExtendGraph(player1.x + 90, player1.y + 140, player1.x + 215, player1.y + 265, suctionSucceedEffect[suctionSucceedEffectCount], TRUE);
+			DrawExtendGraph(whitePlayer.x + 90, whitePlayer.y + 140, whitePlayer.x + 215, whitePlayer.y + 265, suctionSucceedEffect[suctionSucceedEffectCount], TRUE);
 		}
 		else
 		{
-			DrawExtendGraph(player1.x + 90, player1.y - 90, player1.x + 215, player1.y + 35, suctionSucceedEffect[suctionSucceedEffectCount], TRUE);
+			DrawExtendGraph(whitePlayer.x + 90, whitePlayer.y - 90, whitePlayer.x + 215, whitePlayer.y + 35, suctionSucceedEffect[suctionSucceedEffectCount], TRUE);
 		}
 		
 		//吸い込み成功エフェクトカウントを増やす

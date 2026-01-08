@@ -46,7 +46,7 @@ void pauseScene(bool& startPauseFlag,int& BrinkCounter,int pauseScreenHandle,int
 	//Bボタンでタイトルに戻る
 	/*DrawStringToHandle(initialWIDTH / 2 - 125, HEIGHT / 2 + 50, "Bでタイトルへ", GetColor(255, 255, 255), FontSize50);*/
 	DrawStringToHandle(initialWIDTH / 2 - 125, HEIGHT / 2 + 50, "Aでタイトルへ", GetColor(255, 255, 255), FontSize50);
-	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B /*&& GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL*/
+	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
 		|| inputX.Buttons[XINPUT_BUTTON_A] > 0)
 	{
 		StopSoundMem(bgm); //bgmを止める
@@ -58,7 +58,7 @@ void pauseScene(bool& startPauseFlag,int& BrinkCounter,int pauseScreenHandle,int
 	//Xボタンでプレイ画面へ戻る
 	/*DrawStringToHandle(initialWIDTH / 2 - 150, HEIGHT / 2, "Xでプレイ画面へ", GetColor(255, 255, 255), FontSize50);*/
 	DrawStringToHandle(initialWIDTH / 2 - 150, HEIGHT / 2, "Yでプレイ画面へ", GetColor(255, 255, 255), FontSize50);
-	if (input.Buttons[2] > 0 /*&& GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL*/
+	if (input.Buttons[2] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
 		|| inputX.Buttons[XINPUT_BUTTON_Y] > 0)
 	{
 		//ポーズ画面終了フラグをtrueにする
@@ -133,7 +133,7 @@ void gameOverScene(bool& overSoundFlag,int overSound,int& BrinkCounter,int initi
 	}
 
 	//Bボタンでタイトルに戻る
-	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B /*&& GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL*/
+	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
 		|| inputX.Buttons[XINPUT_BUTTON_A] > 0)
 	{
 		StopSoundMem(overSound);
@@ -143,7 +143,7 @@ void gameOverScene(bool& overSoundFlag,int overSound,int& BrinkCounter,int initi
 	}
 }
 
-void clearScene(Player& player1, int initialWIDTH, Player& player2, int& BrinkCounter, int shotSound, int HEIGHT, int FontSize300, int FontSize30, bool& clearSoundFlag, int& score, int FontSize100, int& scoreMagnificatoin, int& damage, int& startVideoCount, int& selectscene, int suctionSound, int bgm, int clearSound, int FontSize50)
+void clearScene(Player& whitePlayer, int initialWIDTH, Player& blackPlayer, int& BrinkCounter, int shotSound, int HEIGHT, int FontSize300, int FontSize30, bool& clearSoundFlag, int& score, int FontSize100, int& scoreMagnificatoin, int& damage, int& startVideoCount, int& selectscene, int suctionSound, int bgm, int clearSound, int FontSize50)
 {
 	//インプット
 	if (GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_360
@@ -152,7 +152,7 @@ void clearScene(Player& player1, int initialWIDTH, Player& player2, int& BrinkCo
 		GetJoypadXInputState(DX_INPUT_PAD1, &inputX);
 	}
 
-	if (player1.x > initialWIDTH && player2.x > initialWIDTH)
+	if (whitePlayer.x > initialWIDTH && blackPlayer.x > initialWIDTH)
 	{
 		//点滅カウンターの数値を増やす
 		BrinkCounter++;
@@ -217,7 +217,7 @@ void clearScene(Player& player1, int initialWIDTH, Player& player2, int& BrinkCo
 		}
 
 		//Bボタンでタイトルに戻る
-		if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B /*&& GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL*/
+		if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
 			|| inputX.Buttons[XINPUT_BUTTON_A] > 0)
 		{
 			startVideoCount = 0;
@@ -227,7 +227,7 @@ void clearScene(Player& player1, int initialWIDTH, Player& player2, int& BrinkCo
 	}
 }
 
-//void proceedPause(int pauseScreenHandle,int& scroll,int wave4,int WIDTH,int HEIGHT,int backGraph,bool& blockFlag,int& blockHP,int& blockX1,int& blockX2,int& blockY1,int& blockY2,Player& player1,Player& player2,int blockGraph, DINPUT_JOYSTATE input, int suctionEffect, int& suctionEffectCount, bool& invincibleFlag, int& invincibleTimeCount, bool& suctionSucceedEffectFlag, int& suctionSucceedEffectCount, int suctionSucceedEffect, int Lstick, int Rstick, int wave1, Enemy& zigzagEnemy, int explosionEffect, Enemy& straightEnemy)
+//void proceedPause(int pauseScreenHandle,int& scroll,int wave4,int WIDTH,int HEIGHT,int backGraph,bool& blockFlag,int& blockHP,int& blockX1,int& blockX2,int& blockY1,int& blockY2,Player& whitePlayer,Player& blackPlayer,int blockGraph, DINPUT_JOYSTATE input, int suctionEffect, int& suctionEffectCount, bool& invincibleFlag, int& invincibleTimeCount, bool& suctionSucceedEffectFlag, int& suctionSucceedEffectCount, int suctionSucceedEffect, int Lstick, int Rstick, int wave1, Enemy& zigzagEnemy, int explosionEffect, Enemy& straightEnemy)
 //{
 //	//Yボタンでポーズ画面へ移行(内部的にはX)
 //	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_X)
@@ -245,7 +245,7 @@ void clearScene(Player& player1, int initialWIDTH, Player& player2, int& BrinkCo
 //		//ブロックを描画
 //		DrawBlock(blockGraph, blockHP, blockFlag, blockX1, blockX2, blockY1, blockY2, scroll);
 //		//プレイヤーの画像を描画
-//		DrawPlayer(player1, player2, input, suctionEffect, suctionEffectCount, invincibleFlag, invincibleTimeCount, suctionSucceedEffectFlag, suctionSucceedEffectCount, suctionSucceedEffect, Lstick, Rstick);
+//		DrawPlayer(whitePlayer, blackPlayer, input, suctionEffect, suctionEffectCount, invincibleFlag, invincibleTimeCount, suctionSucceedEffectFlag, suctionSucceedEffectCount, suctionSucceedEffect, Lstick, Rstick);
 //		//ジグザグ敵の描画
 //		if (scroll > wave1)
 //		{
@@ -277,7 +277,7 @@ void clearScene(Player& player1, int initialWIDTH, Player& player2, int& BrinkCo
 //				DrawShootingEnemyBullet(shootingEnemyBullet[i]);
 //			}
 //		}
-//		DrawUI(scroll, wave4, selectscene, FontSize50, score, scoreMagnificatoin, player1, remainingBulletGraph, remainingBullet, HPgraph, damage, tutorial1and2Flag, initialWIDTH, HEIGHT, tutorial4Flag, FontSize100, BrinkCounter, tutorial3Flag);
+//		DrawUI(scroll, wave4, selectscene, FontSize50, score, scoreMagnificatoin, whitePlayer, remainingBulletGraph, remainingBullet, HPgraph, damage, tutorial1and2Flag, initialWIDTH, HEIGHT, tutorial4Flag, FontSize100, BrinkCounter, tutorial3Flag);
 //
 //		SetDrawScreen(DX_SCREEN_FRONT); // 描画先を戻す
 //

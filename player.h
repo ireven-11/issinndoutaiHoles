@@ -1,7 +1,7 @@
 #pragma once
 
 const int healBullet = 5; //íeâÒïúó 
-const int player2Widht = 125; //çïÇÃïù
+const int blackPlayerWidht = 125; //çïÇÃïù
 const int suctionWidht = 250; //ãzÇ¢çûÇ›ïù
 const int suctionHeight = 205; //ãzÇ¢çûÇ›çÇÇ≥
 const int MaxremainingBullet = 80; //íeè„å¿
@@ -22,6 +22,6 @@ typedef struct Player
 struct Bullet;
 
 //ä÷êîÇÃÉvÉçÉgÉ^ÉCÉvêÈåæ
-void UpdatePlayer(Player& player1,Player& player2, DINPUT_JOYSTATE input, Bullet zigzagEnemyBullet[], int& scoreMagnificatoin, int suctionSound, int succeedSuctionSound, int& remainingBullet, Bullet shootingEnemyBullet[], bool blockFlag[], int blockX1[], int blockX2[], int blockY1[], int blockY2[], int& scroll, int wave4, bool& suctionSucceedEffectFlag);
-void InitializePlayer(Player& player1, Player& player2);
-void DrawPlayer(Player& player1, Player& player2, DINPUT_JOYSTATE input, int suctionEffect[], int& suctionEffectCount, bool& invincibleFlag, int& invincibleTimeCount, bool& suctionSucceedEffectFlag, int& suctionSucceedEffectCount, int suctionSucceedEffect[], int Lstick, int Rstick);
+void UpdatePlayer(Player& whitePlayer,Player& blackPlayer, DINPUT_JOYSTATE input, Bullet zigzagEnemyBullet[], int& scoreMagnificatoin, int suctionSound, int succeedSuctionSound, int& remainingBullet, Bullet shootingEnemyBullet[], bool blockFlag[], int blockX1[], int blockX2[], int blockY1[], int blockY2[], int& scroll, int wave4, bool& suctionSucceedEffectFlag);
+void InitializePlayer(Player& whitePlayer, Player& blackPlayer);
+void DrawPlayer(Player& whitePlayer, Player& blackPlayer, DINPUT_JOYSTATE input, int suctionEffect[], int& suctionEffectCount, bool& invincibleFlag, int& invincibleTimeCount, bool& suctionSucceedEffectFlag, int& suctionSucceedEffectCount, int suctionSucceedEffect[], int Lstick, int Rstick);

@@ -49,7 +49,7 @@ void UpdateShootingEnemy(Enemy shootingEemmy[],int& scroll);
 void DrawShootingEnemy(Enemy shootingEnemy[], int explosionEffect[]);
 
 void InitializeBackEnemy(Enemy backEnemy[]);
-void UpdateBackEnemy(Enemy backEnemy[],int wave1, int& scroll, Player& player2, int wave3, int wave4);
+void UpdateBackEnemy(Enemy backEnemy[],int wave1, int& scroll, Player& blackPlayer, int wave3, int wave4);
 void DrawBackEnemy(Enemy backEnemy[], int explosionEffect[]);
 
 void InitializeRaidEnemy(Enemy raidEnemy[]);

@@ -33,8 +33,8 @@ void InitializeTutorialBullet(Bullet& TutorialBullet);
 void UpdateTutorialBullet(Bullet& TutorialBullet,Enemy& TutorialEnemy);
 void DrawTutorialBullet(Bullet& TutorialBullet);
 
-void InitializePlayerBullet(Bullet PlayerBullet[],int PlayerShotNumber,Player& player1);
-void UpdatePlayerBullet(Bullet PlayerBullet[], int PlayerShotNumber,Player& player1, DINPUT_JOYSTATE input, int shotSound, int& remainingBullet);
+void InitializePlayerBullet(Bullet PlayerBullet[],int PlayerShotNumber,Player& whitePlayer);
+void UpdatePlayerBullet(Bullet PlayerBullet[], int PlayerShotNumber,Player& whitePlayer, DINPUT_JOYSTATE input, int shotSound, int& remainingBullet);
 void DrawPlayerBullet(Bullet PlayerBullet[], int PlayerShotNumber);
 
 void AwakeZigzagEnemyBullet(Bullet& zigzagEnemyBullet);
@@ -43,6 +43,6 @@ void UpdateZigzagEnemyBullet(Bullet& zigzagEnemyBullet);
 void DrawZigzagEnemyBullet(Bullet& zigzagEnemyBullet);
 
 void AwakeShootingEnemyBullet(Bullet& shootingEnemyBullet);
-void InitializeShootingEnemyBullet(Bullet& shootingEnemyBullet, Enemy& shootingEnemy, Player& player1);
+void InitializeShootingEnemyBullet(Bullet& shootingEnemyBullet, Enemy& shootingEnemy, Player& whitePlayer);
 void UpdateShootingEnemyBullet(Bullet& shootingEnemyBullet);
 void DrawShootingEnemyBullet(Bullet& shootingEnemyBullet);
