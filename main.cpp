@@ -61,6 +61,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		return -1;
 	}
 
+	int test1 = GetJoypadNum();
+
+	int test = GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL;
+
+	//プロコンを使うかどうか
+	bool isProcon = GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL ? true : false;
+
 	// ウインドウサイズ情報の初期化
 	GetWindowSize(&WindowW, &WindowH);
 
@@ -214,9 +221,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	{
 		ClearDrawScreen();
 
-		// ウインドウのクライアント領域を取得する
-		GetWindowSize(&WindowW, &WindowH);
-
 		//インプット
 		if (GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_360
 			|| GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_ONE)
@@ -227,6 +231,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		{
 			GetJoypadDirectInputState(DX_INPUT_PAD1, &input);
 		}
+
+		int test2 = GetJoypadType(DX_INPUT_PAD1);
 
 		//シーン切り替え
 		switch (selectscene)
@@ -326,12 +332,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			break;
 
 		case EXPLANE:
+		{
 
 			//背景描画
-			DrawExtendGraph(0, 0, initialWIDTH, HEIGHT, backGraph,TRUE);
+			DrawExtendGraph(0, 0, initialWIDTH, HEIGHT, backGraph, TRUE);
 
 			//キャラの画像を描画
-			DrawPlayer(whitePlayer, blackPlayer, input,suctionEffect, suctionEffectCount, invincibleFlag, invincibleTimeCount, suctionSucceedEffectFlag, suctionSucceedEffectCount, suctionSucceedEffect, Lstick, Rstick);
+			DrawPlayer(whitePlayer, blackPlayer, input, suctionEffect, suctionEffectCount, invincibleFlag, invincibleTimeCount, suctionSucceedEffectFlag, suctionSucceedEffectCount, suctionSucceedEffect, Lstick, Rstick, isProcon);
 
 			//チュートリアル敵を描画
 			DrawTutorialEnemy(TutorialEnemy);
@@ -346,9 +353,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			{
 				BrinkCounter = 0;
 			}
-			
+
 			//プレイヤールーチン
-			UpdatePlayer(whitePlayer, blackPlayer, input, zigzagEnemyBullet, scoreMagnificatoin, suctionSound, succeedSuctionSound, remainingBullet, shootingEnemyBullet, blockFlag, blockX1, blockX2, blockY1, blockY2, scroll, wave4, suctionSucceedEffectFlag);
+			UpdatePlayer(whitePlayer, blackPlayer, input, zigzagEnemyBullet, scoreMagnificatoin, suctionSound, succeedSuctionSound, remainingBullet, shootingEnemyBullet, blockFlag, blockX1, blockX2, blockY1, blockY2, scroll, wave4, suctionSucceedEffectFlag, isProcon);
 
 			//プレイヤーキャラ両方が右側にいったらtutorial1and2フラグをfalseにして演出を加える
 			if (whitePlayer.x > initialWIDTH / 2 && blackPlayer.x > initialWIDTH / 2)
@@ -372,7 +379,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			UpdateTutorialEnemy(TutorialEnemy);
 
 			//プレイヤー弾ルーチン
-			UpdatePlayerBullet(PlayerBullet, PlayerShotNumber, whitePlayer, input, shotSound, remainingBullet);
+			UpdatePlayerBullet(PlayerBullet, PlayerShotNumber, whitePlayer, input, shotSound, remainingBullet, isProcon);
 
 			//プレイヤーが弾をうった時にショットカウントを増やす
 			if (input.Buttons[5] > 0 && !tutorial1and2Flag
@@ -414,7 +421,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 				//チュートリアル敵弾描画
 				DrawTutorialBullet(TutorialBullet);
 
-				if (input.Buttons[4] > 0 
+				if (input.Buttons[4] > 0
 					|| input.Buttons[6] > 0
 					|| inputX.LeftTrigger > 0
 					|| inputX.Buttons[XINPUT_BUTTON_LEFT_SHOULDER] > 0)
@@ -462,7 +469,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			//プレイヤー弾のフラグ管理（当たり判定)
 			hitPlayerBullet(PlayerBullet, PlayerShotNumber, blackPlayer, zigzagEnemy, score, straightEnemy, shootingEnemy, backEnemy, raidEnemy, blockHP, blockFlag, blockX1, blockX2, blockY1, blockY2, explosionSound);
 
-			//スタートボタンでプレイ画面へ
+			//プレイ画面へ
 			if (input.Buttons[11] > 0
 				|| inputX.Buttons[XINPUT_BUTTON_RIGHT_THUMB] > 0)
 			{
@@ -492,7 +499,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 					whitePlayer.y = sannbyaku;
 					blackPlayer.x = hyaku;
 					blackPlayer.y = sannbyaku;
-					for ( int i = 0; i < PlayerShotNumber; i++)
+					for (int i = 0; i < PlayerShotNumber; i++)
 					{
 						PlayerBullet[i].isInScreenFlag = false;
 					}
@@ -501,6 +508,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			}
 
 			break;
+		}
 		case PLAY:
 			
 			//ポーズ画面終了効果音
@@ -535,7 +543,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			}
 
 			//クリア画面
-			clearScene(whitePlayer, initialWIDTH, blackPlayer, BrinkCounter, shotSound, HEIGHT, FontSize300, FontSize30, clearSoundFlag, score,  FontSize100, scoreMagnificatoin, damage, startVideoCount, selectscene, suctionSound, bgm, clearSound, FontSize50);
+			clearScene(whitePlayer, initialWIDTH, blackPlayer, BrinkCounter, shotSound, HEIGHT, FontSize300, FontSize30, clearSoundFlag, score,  FontSize100, scoreMagnificatoin, damage, startVideoCount, selectscene, suctionSound, bgm, clearSound, FontSize50, isProcon);
 
 			//bgmフラグがtrueのときだけbgmをながす
 			if (bgmFlag)
@@ -558,13 +566,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			DrawBlock(blockGraph, blockHP, blockFlag, blockX1, blockX2, blockY1, blockY2, scroll);
 
 			//プレイヤールーチン
-			UpdatePlayer(whitePlayer, blackPlayer, input, zigzagEnemyBullet, scoreMagnificatoin, suctionSound, succeedSuctionSound, remainingBullet, shootingEnemyBullet, blockFlag, blockX1, blockX2, blockY1, blockY2, scroll, wave4, suctionSucceedEffectFlag);
+			UpdatePlayer(whitePlayer, blackPlayer, input, zigzagEnemyBullet, scoreMagnificatoin, suctionSound, succeedSuctionSound, remainingBullet, shootingEnemyBullet, blockFlag, blockX1, blockX2, blockY1, blockY2, scroll, wave4, suctionSucceedEffectFlag, isProcon);
 
 			//プレイヤーの画像を描画
-			DrawPlayer(whitePlayer, blackPlayer, input, suctionEffect, suctionEffectCount, invincibleFlag, invincibleTimeCount, suctionSucceedEffectFlag, suctionSucceedEffectCount, suctionSucceedEffect, Lstick, Rstick);
+			DrawPlayer(whitePlayer, blackPlayer, input, suctionEffect, suctionEffectCount, invincibleFlag, invincibleTimeCount, suctionSucceedEffectFlag, suctionSucceedEffectCount, suctionSucceedEffect, Lstick, Rstick, isProcon);
 			
 			//プレイヤー弾ルーチン
-			UpdatePlayerBullet(PlayerBullet, PlayerShotNumber, whitePlayer, input, shotSound, remainingBullet);
+			UpdatePlayerBullet(PlayerBullet, PlayerShotNumber, whitePlayer, input, shotSound, remainingBullet, isProcon);
 
 			//スクロールが一定に達すると敵が出現
 			if (scroll > wave1)
@@ -702,7 +710,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			DrawUI(scroll, wave4, selectscene, FontSize50, score, scoreMagnificatoin, whitePlayer, remainingBulletGraph, remainingBullet, HPgraph, damage, tutorial1and2Flag, initialWIDTH, HEIGHT, tutorial4Flag, FontSize100, BrinkCounter, tutorial3Flag, startVideoCount, warningGraph, warningSound);
 
 			//Yボタンでポーズ画面へ移行(内部的にはX)
-			if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_X && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
+			if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_X && isProcon
 				|| inputX.Buttons[XINPUT_BUTTON_X] > 0)
 			{
 				// ゲーム画面をバッファに保存
@@ -718,7 +726,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 				//ブロックを描画
 				DrawBlock(blockGraph, blockHP, blockFlag, blockX1, blockX2, blockY1, blockY2, scroll);
 				//プレイヤーの画像を描画
-				DrawPlayer(whitePlayer, blackPlayer, input, suctionEffect, suctionEffectCount, invincibleFlag, invincibleTimeCount,suctionSucceedEffectFlag, suctionSucceedEffectCount, suctionSucceedEffect, Lstick, Rstick);
+				DrawPlayer(whitePlayer, blackPlayer, input, suctionEffect, suctionEffectCount, invincibleFlag, invincibleTimeCount,suctionSucceedEffectFlag, suctionSucceedEffectCount, suctionSucceedEffect, Lstick, Rstick, isProcon);
 				//ジグザグ敵の描画
 				if (scroll > wave1)
 				{
@@ -767,12 +775,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			break;
 
 		case PAUSE:
-			pauseScene(startPauseFlag, BrinkCounter, pauseScreenHandle, FontSize100, FontSize50, bgm, startVideoCount, finishPauseFlag, startPauseSound, initialWIDTH, HEIGHT, selectscene, input, warningSound);
+			pauseScene(startPauseFlag, BrinkCounter, pauseScreenHandle, FontSize100, FontSize50, bgm, startVideoCount, finishPauseFlag, startPauseSound, initialWIDTH, HEIGHT, selectscene, input, warningSound, isProcon);
 
 			break;
 
 		case OVER:
-			gameOverScene(overSoundFlag, overSound, BrinkCounter, initialWIDTH, HEIGHT, FontSize50, FontSize100, score, scoreMagnificatoin,  startVideoCount, FontSize300, selectscene);
+			gameOverScene(overSoundFlag, overSound, BrinkCounter, initialWIDTH, HEIGHT, FontSize50, FontSize100, score, scoreMagnificatoin,  startVideoCount, FontSize300, selectscene, isProcon);
 
 			StopSoundMem(warningSound);
 

@@ -26,7 +26,7 @@ void InitializePlayer(Player& whitePlayer,Player& blackPlayer)
 }
 
 //プレイヤールーチン
-void UpdatePlayer(Player& whitePlayer, Player& blackPlayer, DINPUT_JOYSTATE input, Bullet zigzagEnemyBullet[], int& scoreMagnificatoin, int suctionSound, int succeedSuctionSound, int& remainingBullet, Bullet shootingEnemyBullet[], bool blockFlag[], int blockX1[], int blockX2[], int blockY1[], int blockY2[],int& scroll,int wave4, bool& suctionSucceedEffectFlag)
+void UpdatePlayer(Player& whitePlayer, Player& blackPlayer, DINPUT_JOYSTATE input, Bullet zigzagEnemyBullet[], int& scoreMagnificatoin, int suctionSound, int succeedSuctionSound, int& remainingBullet, Bullet shootingEnemyBullet[], bool blockFlag[], int blockX1[], int blockX2[], int blockY1[], int blockY2[],int& scroll,int wave4, bool& suctionSucceedEffectFlag, bool isProcon)
 {
 	//インプット
 	if (GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_360
@@ -270,8 +270,8 @@ void UpdatePlayer(Player& whitePlayer, Player& blackPlayer, DINPUT_JOYSTATE inpu
 		}
 
 		//LBボタンを押してる間だけ弾を吸う
-		if (input.Buttons[4] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
-			|| input.Buttons[6] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
+		if (input.Buttons[4] > 0 && isProcon
+			|| input.Buttons[6] > 0 && isProcon
 			|| inputX.LeftTrigger > 0
 			|| inputX.Buttons[XINPUT_BUTTON_LEFT_SHOULDER] > 0)
 		{
@@ -370,7 +370,7 @@ void UpdatePlayer(Player& whitePlayer, Player& blackPlayer, DINPUT_JOYSTATE inpu
 }
 
 //プレイヤー描画
-void DrawPlayer(Player& whitePlayer, Player& blackPlayer, DINPUT_JOYSTATE input,int suctionEffect[],int& suctionEffectCount,bool& invincibleFlag,int& invincibleTimeCount, bool& suctionSucceedEffectFlag, int& suctionSucceedEffectCount, int suctionSucceedEffect[], int Lstick,int Rstick)
+void DrawPlayer(Player& whitePlayer, Player& blackPlayer, DINPUT_JOYSTATE input,int suctionEffect[],int& suctionEffectCount,bool& invincibleFlag,int& invincibleTimeCount, bool& suctionSucceedEffectFlag, int& suctionSucceedEffectCount, int suctionSucceedEffect[], int Lstick,int Rstick, bool isProcon)
 {
 	//インプット
 	if (GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_360
@@ -378,16 +378,14 @@ void DrawPlayer(Player& whitePlayer, Player& blackPlayer, DINPUT_JOYSTATE input,
 	{
 		GetJoypadXInputState(DX_INPUT_PAD1, &inputX);
 	}
-
-	int test = GetJoypadType(PAD_INPUT_1);
-
+	
 	if (whitePlayer.isInScreenFlag && blackPlayer.isInScreenFlag)
 	{
 		//両キャラのアクション状態の描画
-		if (input.Buttons[4] > 0 && input.Buttons[5] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
-			|| input.Buttons[6] > 0 && input.Buttons[7] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
-			|| input.Buttons[4] > 0 && input.Buttons[7] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
-			|| input.Buttons[6] > 0 && input.Buttons[5] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
+		if (input.Buttons[4] > 0 && input.Buttons[5] > 0 && isProcon
+			|| input.Buttons[6] > 0 && input.Buttons[7] > 0 && isProcon
+			|| input.Buttons[4] > 0 && input.Buttons[7] > 0 && isProcon
+			|| input.Buttons[6] > 0 && input.Buttons[5] > 0 && isProcon
 			|| inputX.RightTrigger > 0 && inputX.LeftTrigger > 0
 			|| inputX.Buttons[XINPUT_BUTTON_RIGHT_SHOULDER] > 0 && inputX.Buttons[XINPUT_BUTTON_LEFT_SHOULDER] > 0
 			|| inputX.RightTrigger > 0 && inputX.Buttons[XINPUT_BUTTON_LEFT_SHOULDER] > 0
@@ -417,8 +415,8 @@ void DrawPlayer(Player& whitePlayer, Player& blackPlayer, DINPUT_JOYSTATE input,
 			suctionEffectCount--;
 
 		}
-		else if (input.Buttons[5] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
-			|| input.Buttons[7] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
+		else if (input.Buttons[5] > 0 && isProcon
+			|| input.Buttons[7] > 0 && isProcon
 			|| inputX.RightTrigger > 0
 			|| inputX.Buttons[XINPUT_BUTTON_RIGHT_SHOULDER] > 0)
 		{
@@ -435,8 +433,8 @@ void DrawPlayer(Player& whitePlayer, Player& blackPlayer, DINPUT_JOYSTATE input,
 				DrawGraph(blackPlayer.x, blackPlayer.y, blackPlayer.normalgraph, TRUE);
 			}
 		}
-		else if (input.Buttons[4] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
-			|| input.Buttons[6] > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
+		else if (input.Buttons[4] > 0 && isProcon
+			|| input.Buttons[6] > 0 && isProcon
 			|| inputX.LeftTrigger > 0
 			|| inputX.Buttons[XINPUT_BUTTON_LEFT_SHOULDER] > 0)
 		{

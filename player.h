@@ -22,6 +22,6 @@ typedef struct Player
 struct Bullet;
 
 //関数のプロトタイプ宣言
-void UpdatePlayer(Player& whitePlayer,Player& blackPlayer, DINPUT_JOYSTATE input, Bullet zigzagEnemyBullet[], int& scoreMagnificatoin, int suctionSound, int succeedSuctionSound, int& remainingBullet, Bullet shootingEnemyBullet[], bool blockFlag[], int blockX1[], int blockX2[], int blockY1[], int blockY2[], int& scroll, int wave4, bool& suctionSucceedEffectFlag);
+void UpdatePlayer(Player& whitePlayer,Player& blackPlayer, DINPUT_JOYSTATE input, Bullet zigzagEnemyBullet[], int& scoreMagnificatoin, int suctionSound, int succeedSuctionSound, int& remainingBullet, Bullet shootingEnemyBullet[], bool blockFlag[], int blockX1[], int blockX2[], int blockY1[], int blockY2[], int& scroll, int wave4, bool& suctionSucceedEffectFlag, bool isProcon);
 void InitializePlayer(Player& whitePlayer, Player& blackPlayer);
-void DrawPlayer(Player& whitePlayer, Player& blackPlayer, DINPUT_JOYSTATE input, int suctionEffect[], int& suctionEffectCount, bool& invincibleFlag, int& invincibleTimeCount, bool& suctionSucceedEffectFlag, int& suctionSucceedEffectCount, int suctionSucceedEffect[], int Lstick, int Rstick);
+void DrawPlayer(Player& whitePlayer, Player& blackPlayer, DINPUT_JOYSTATE input, int suctionEffect[], int& suctionEffectCount, bool& invincibleFlag, int& invincibleTimeCount, bool& suctionSucceedEffectFlag, int& suctionSucceedEffectCount, int suctionSucceedEffect[], int Lstick, int Rstick, bool isProcon);

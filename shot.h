@@ -34,7 +34,7 @@ void UpdateTutorialBullet(Bullet& TutorialBullet,Enemy& TutorialEnemy);
 void DrawTutorialBullet(Bullet& TutorialBullet);
 
 void InitializePlayerBullet(Bullet PlayerBullet[],int PlayerShotNumber,Player& whitePlayer);
-void UpdatePlayerBullet(Bullet PlayerBullet[], int PlayerShotNumber,Player& whitePlayer, DINPUT_JOYSTATE input, int shotSound, int& remainingBullet);
+void UpdatePlayerBullet(Bullet PlayerBullet[], int PlayerShotNumber,Player& whitePlayer, DINPUT_JOYSTATE input, int shotSound, int& remainingBullet, bool isProcon);
 void DrawPlayerBullet(Bullet PlayerBullet[], int PlayerShotNumber);
 
 void AwakeZigzagEnemyBullet(Bullet& zigzagEnemyBullet);

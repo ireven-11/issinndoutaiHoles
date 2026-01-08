@@ -72,7 +72,7 @@ void InitializePlayerBullet(Bullet PlayerBullet[],int PlayerShotNumber, Player& 
 }
 
 //プレイヤー弾ルーチン
-void UpdatePlayerBullet(Bullet PlayerBullet[], int PlayerShotNumber , Player& whitePlayer, DINPUT_JOYSTATE input, int shotSound,int& remainingBullet)
+void UpdatePlayerBullet(Bullet PlayerBullet[], int PlayerShotNumber , Player& whitePlayer, DINPUT_JOYSTATE input, int shotSound,int& remainingBullet, bool isProcon)
 {
     //インプット
     if (GetJoypadType(DX_INPUT_PAD1) == DX_PADTYPE_XBOX_360
@@ -86,8 +86,8 @@ void UpdatePlayerBullet(Bullet PlayerBullet[], int PlayerShotNumber , Player& wh
     }
 
     //RBボタンを押したときに射撃する
-    if (input.Buttons[5] > 0 && remainingBullet > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
-        || input.Buttons[7] > 0 && remainingBullet > 0 && GetJoypadType(PAD_INPUT_1) == DX_PADTYPE_SWITCH_PRO_CTRL
+    if (input.Buttons[5] > 0 && remainingBullet > 0 && isProcon
+        || input.Buttons[7] > 0 && remainingBullet > 0 && isProcon
         || inputX.RightTrigger > 0 && remainingBullet > 0
         || inputX.Buttons[XINPUT_BUTTON_RIGHT_SHOULDER] > 0 && remainingBullet > 0)
     {
