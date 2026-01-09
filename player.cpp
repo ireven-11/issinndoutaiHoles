@@ -40,122 +40,85 @@ void UpdatePlayer(Player& whitePlayer, Player& blackPlayer, DINPUT_JOYSTATE inpu
 	{
 		//キャラが画面外に出たときコントローラーのスティック入力を無効にする(多少バグ？あり。余裕があれば修正)
 	    //白プレイヤーの入力無効
-		/*if (whitePlayer.x < 0)
-		{
-			input.Z = 0;
-		}
-		else if (whitePlayer.y < 0)
-		{
-			input.Rz = 0;
-		}
-		else if (whitePlayer.x + 176 > 1925)
-		{
-			input.Z = 0;
-		}
-		else if (whitePlayer.y + 185 > 1000)
-		{
-			input.Rz = 0;;
-		}*/
 		if (whitePlayer.x < 0)
 		{
-			input.Rx = 0;
+			inputX.ThumbRX = 0;
 		}
 		else if (whitePlayer.y < 0)
 		{
-			input.Ry = 0;
+			inputX.ThumbRY = 0;
 		}
 		else if (whitePlayer.x + 176 > 1925)
 		{
-			input.Rx = 0;
+			inputX.ThumbRX = 0;
 		}
 		else if (whitePlayer.y + 185 > 1000)
 		{
-			input.Ry = 0;;
+			inputX.ThumbRY = 0;
 		}
 		//黒プレイヤーの入力無効
 		if (blackPlayer.x <= 0)
 		{
-			input.X = 0;
+			inputX.ThumbLX = 0;
 		}
 		else if (blackPlayer.y <= 0)
 		{
-			input.Y = 0;
+			inputX.ThumbLY = 0;
 		}
 		else if (blackPlayer.x + 183 > 1925)
 		{
-			input.X = 0;
+			inputX.ThumbLX = 0;
 		}
 		else if (blackPlayer.y + 190 > 1000)
 		{
-			input.Y = 0;
+			inputX.ThumbLY = 0;
 		}
 
 		//でかいブロックが白プレイヤーにめり込んでいるとき
-		//if (blockX1[10] < whitePlayer.x + 176 && whitePlayer.x + 176 < blockX2[10] && blockFlag[10])
-		//{
-		//	//入力を無効にする
-		//	input.Z = 0;
-		//}
 		if (blockX1[10] < whitePlayer.x + 176 && whitePlayer.x + 176 < blockX2[10] && blockFlag[10])
 		{
 			//入力を無効にする
-			input.Rx = 0;
+			inputX.ThumbRX = 0;
 		}
 		//でかいブロックが黒プレイヤーにめり込んでいるとき
 		if (blockX1[10] < blackPlayer.x + 176 && blackPlayer.x + 176 < blockX2[10] && blockFlag[10])
 		{
 			//入力を無効にする
-			input.X = 0;
+			inputX.ThumbLY = 0;
 		}
 
 		// 右スティックを倒していたら白プレイヤーを移動させる
-		/*if (input.Rz < 0)
+		if (inputX.ThumbRY > 0)
 		{
 			whitePlayer.y -= whitePlayer.speed;
 		}
-		if (input.Rz > 0)
+		if (inputX.ThumbRY < 0)
 		{
 			whitePlayer.y += whitePlayer.speed;
 		}
-		if (input.Z < 0)
+		if (inputX.ThumbRX < 0)
 		{
 			whitePlayer.x -= whitePlayer.speed;
 		}
-		if (input.Z > 0)
-		{
-			whitePlayer.x += whitePlayer.speed;
-		}*/
-		if (input.Ry < 0)
-		{
-			whitePlayer.y -= whitePlayer.speed;
-		}
-		if (input.Ry > 0)
-		{
-			whitePlayer.y += whitePlayer.speed;
-		}
-		if (input.Rx < 0)
-		{
-			whitePlayer.x -= whitePlayer.speed;
-		}
-		if (input.Rx > 0)
+		if (inputX.ThumbRX > 0)
 		{
 			whitePlayer.x += whitePlayer.speed;
 		}
 
 		//左スティックを倒したら黒プレイヤーを移動させる
-		if (input.Y < 0)
+		if (inputX.ThumbLY > 0)
 		{
 			blackPlayer.y -= blackPlayer.speed + 3;
 		}
-		if (input.Y > 0)
+		if (inputX.ThumbLY < 0)
 		{
 			blackPlayer.y += blackPlayer.speed + 3;
 		}
-		if (input.X < 0)
+		if (inputX.ThumbLX < 0)
 		{
 			blackPlayer.x -= blackPlayer.speed + 3;
 		}
-		if (input.X > 0)
+		if (inputX.ThumbLX > 0)
 		{
 			blackPlayer.x += blackPlayer.speed + 3;
 		}
@@ -212,7 +175,7 @@ void UpdatePlayer(Player& whitePlayer, Player& blackPlayer, DINPUT_JOYSTATE inpu
 						whitePlayer.x -= whitePlayer.speed;
 
 						//入力を無効にする
-						input.Z = 0;
+						inputX.ThumbRX = 0;
 					}
 					else if (whitePlayer.x < blockX2[i] && blockX2[i] < whitePlayer.x + 176 &&
 						whitePlayer.y < blockY1[i] && blockY1[i] < whitePlayer.y + 185 ||
@@ -222,7 +185,7 @@ void UpdatePlayer(Player& whitePlayer, Player& blackPlayer, DINPUT_JOYSTATE inpu
 						whitePlayer.x += whitePlayer.speed;
 
 						//入力を無効にする
-						input.Z = 0;
+						inputX.ThumbRX = 0;
 					}
 
 					//ブロックが黒プレイヤーにめり込んでいるとき
@@ -234,7 +197,7 @@ void UpdatePlayer(Player& whitePlayer, Player& blackPlayer, DINPUT_JOYSTATE inpu
 						blackPlayer.x -= blackPlayer.speed;
 
 						//入力を無効にする
-						input.X = 0;
+						inputX.ThumbLX = 0;
 					}
 					else if (blackPlayer.x < blockX2[i] && blockX2[i] < blackPlayer.x + 176 &&
 						blackPlayer.y < blockY1[i] && blockY1[i] < blackPlayer.y + 185 ||
@@ -244,7 +207,7 @@ void UpdatePlayer(Player& whitePlayer, Player& blackPlayer, DINPUT_JOYSTATE inpu
 						blackPlayer.x += blackPlayer.speed;
 
 						//入力を無効にする
-						input.X = 0;
+						inputX.ThumbLX = 0;
 					}
 				}
 				else
@@ -255,7 +218,7 @@ void UpdatePlayer(Player& whitePlayer, Player& blackPlayer, DINPUT_JOYSTATE inpu
 						whitePlayer.x -= whitePlayer.speed;
 
 						//入力を無効にする
-						input.Z = 0;
+						inputX.ThumbRX = 0;
 					}
 					//ブロックが黒プレイヤーにめり込んでいるとき
 					if (blockX1[i] < blackPlayer.x + 176 && blackPlayer.x + 176 < blockX2[i])
@@ -263,7 +226,7 @@ void UpdatePlayer(Player& whitePlayer, Player& blackPlayer, DINPUT_JOYSTATE inpu
 						blackPlayer.x -= blackPlayer.speed;
 
 						//入力を無効にする
-						input.X = 0;
+						inputX.ThumbLX = 0;
 					}
 				}
 			}
