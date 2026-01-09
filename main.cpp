@@ -71,6 +71,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	// ウインドウサイズ情報の初期化
 	GetWindowSize(&WindowW, &WindowH);
 
+	//pc自体の画面解像度をdxlibのスクリーンサイズに合うように変更
+	DEVMODE pcScreenInfo;	//DEVMODEはpcのスクリーン情報を格納する構造体（windowsAPI）
+	pcScreenInfo.dmPelsWidth = 1920;
+	pcScreenInfo.dmPelsHeight = 1080;
+	ChangeDisplaySettings(&pcScreenInfo, CDS_FULLSCREEN);	//第二引数を「CDS_FULLSCREEN」にするとアプリ終了時に元の解像度に戻る
+
 	SetMainWindowText("イッシンドウタイホールズ");
 	SetDrawScreen(DX_SCREEN_BACK);		   //背景をセットする
 	SetGraphMode(initialWIDTH, HEIGHT, 32);//ウィンドウのサイズとカラーモードを決める
@@ -790,7 +796,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		//リフレッシュレート対策
 		fps->update();
 		fps->wait();
-		fps->draw();
+		//fps->draw();
 
 		// 裏画面の内容を表画面に反映
 		ScreenFlip();
